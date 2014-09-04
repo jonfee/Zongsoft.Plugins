@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugin name="Main"
+        title="Main Plugin"
+        author="Popeye Zhong(zongsoft@gmail.com)"
+        version="3.1.1310.0"
+        copyright="Copyright (C) 2010-2013 Zongsoft Corporation. All rights reserved."
+        description="Created Date: 2012-6-9 by Popeye Zhong, Modified Date: 2013-10 by Popeye Zhong.">
+
+	<manifest>
+		<assemblies>
+			<assembly name="Zongsoft.Plugins" />
+		</assemblies>
+	</manifest>
+
+	<builders>
+		<!-- 基础对象 -->
+		<builder name="object" type="Zongsoft.Plugins.Builders.ObjectBuilder, Zongsoft.Plugins"/>
+
+		<!-- 组件模型 -->
+		<builder name="action" type="Zongsoft.ComponentModel.Plugins.Builders.ActionBuilder, Zongsoft.Plugins" />
+		<builder name="schema" type="Zongsoft.ComponentModel.Plugins.Builders.SchemaBuilder, Zongsoft.Plugins" />
+		<builder name="component" type="Zongsoft.ComponentModel.Plugins.Builders.ComponentBuilder, Zongsoft.Plugins" />
+
+		<!-- 选项配置 -->
+		<builder name="option" type="Zongsoft.Options.Plugins.Builders.OptionBuilder, Zongsoft.Plugins" />
+
+		<!-- 服务管理 -->
+		<builder name="worker" type="Zongsoft.Services.Plugins.Builders.WorkerBuilder, Zongsoft.Plugins" />
+		<builder name="provider" type="Zongsoft.Services.Plugins.Builders.ServiceProviderBuilder, Zongsoft.Plugins" />
+		<builder name="serviceProvider" type="Zongsoft.Services.Plugins.Builders.ServiceProviderBuilder, Zongsoft.Plugins" />
+		<builder name="commandNode" type="Zongsoft.Services.Plugins.Builders.CommandTreeNodeBuilder, Zongsoft.Plugins" />
+	</builders>
+
+	<parsers>
+		<parser name="path" type="Zongsoft.Plugins.Parsers.PluginPathParser, Zongsoft.Plugins" />
+		<parser name="type" type="Zongsoft.Plugins.Parsers.TypeParser, Zongsoft.Plugins" />
+		<parser name="object" type="Zongsoft.Plugins.Parsers.ObjectParser, Zongsoft.Plugins" />
+		<parser name="static" type="Zongsoft.Plugins.Parsers.StaticParser, Zongsoft.Plugins" />
+		<parser name="res" type="Zongsoft.Resources.Plugins.Parsers.ResourceParser, Zongsoft.Plugins" />
+		<parser name="opt" type="Zongsoft.Options.Plugins.Parsers.OptionParser, Zongsoft.Plugins" />
+		<parser name="srv" type="Zongsoft.Services.Plugins.Parsers.ServicesParser, Zongsoft.Plugins" />
+		<parser name="cmd" type="Zongsoft.Services.Plugins.Parsers.CommandParser, Zongsoft.Plugins" />
+		<parser name="authorize" type="Zongsoft.Security.Membership.Plugins.AuthorizationParser, Zongsoft.Plugins" />
+	</parsers>
+
+	<!-- 挂载启动项 -->
+	<extension path="/Workbench/Startup">
+		<!--object name="TcpServer" value="/Workspace/Communication/TcpServer" /-->
+		<!--object name="FtpServer" value="/Workspace/Communication/FtpServer" /-->
+	</extension>
+
+	<!-- 声明扩展点 -->
+	<extension path="/Workbench">
+		<!-- 设置选项扩展点 -->
+		<object name="Options" value="/Workspace/Environment/ApplicationContext.OptionManager.RootNode">
+			<option name="Environment" title="{res:Text.Environment}" />
+			
+			<option name="Communication" title="{res:Text.Communication}">
+				<option name="Net" title="{res:Text.Net}" />
+			</option>
+		</object>
+
+		<!-- 设置异常管理扩展点 -->
+		<object name="ExceptionManager" value="{static:Zongsoft.Diagnostics.ExceptionHandlerManager.Instance, Zongsoft.CoreLibrary}">
+			<object name="Handlers" value="/Workbench/ExceptionManager.Handlers" />
+		</object>
+	</extension>
+
+	<!-- 挂载默认服务容器 -->
+	<extension path="/Workspace/Environment">
+		<applicationContext.serviceFactory.default>
+			<serviceProvider name="Default" path="/Workspace/Services" />
+		</applicationContext.serviceFactory.default>
+	</extension>
+
+	<!-- 挂载服务容器工厂 -->
+	<extension path="/Workspace/Services">
+		<object name="Providers" value="/Workspace/Environment/ApplicationContext.ServiceFactory" />
+	</extension>
+
+	<!-- 将服务容器工厂路径附加到工作台路径下，以匿名节点的方式驱动服务容器工厂的自动构建动作 -->
+	<extension path="/Workbench">
+		<object value="/Workspace/Services/Providers" />
+	</extension>
+
+	<!-- 挂载命令执行器 -->
+	<extension path="/Workbench">
+		<!-- 创建命令执行器并将其设置到默认属性中 -->
+		<object name="CommandExecutor"
+		        set="Zongsoft.Services.CommandExecutor.Default, Zongsoft.CoreLibrary"
+		        type="Zongsoft.Services.CommandExecutor, Zongsoft.CoreLibrary">
+
+			<!-- 将默认命令执行器的根节点暴露出来 -->
+			<object name="Commands" value="{path:../@Root}" />
+		</object>
+
+		<!-- 将默认命令执行器的根节点暴露出来 -->
+		<object name="Commands" value="{path:../CommandExecutor.Root}" />
+	</extension>
+
+	<!-- 挂载服务提供程序 -->
+	<extension path="/Workspace/Services/Providers">
+		<!-- 挂载“通讯”服务提供程序 -->
+		<serviceProvider name="Communication" path="/Workspace/Services/Communication" />
+
+		<!-- 挂载“安全”服务提供程序 -->
+		<serviceProvider name="Security" path="/Workspace/Services/Security" />
+	</extension>
+
+	<!-- 挂载默认服务容器下的各个服务 -->
+	<extension path="/Workspace/Services">
+		<object name="SchemaProvider" category="/Workspace/Schemas" type="Zongsoft.ComponentModel.SchemaProvider, Zongsoft.CoreLibrary" />
+
+		<object name="Queue" minimumGrow="256" type="Zongsoft.Collections.Queue, Zongsoft.CoreLibrary">
+			<object.constructor>
+				<parameter name="capacity" type="int">1024</parameter>
+			</object.constructor>
+
+			<queue.maximumLimit>1024</queue.maximumLimit>
+		</object>
+	</extension>
+
+	<!-- 挂载全局模式根节点 -->
+	<extension path="/Workspace">
+		<object name="Schemas" type="Zongsoft.ComponentModel.SchemaCategory, Zongsoft.CoreLibrary" />
+	</extension>
+
+	<!-- 挂载通讯业务 -->
+	<extension path="/Workspace/Communication">
+		<object name="TcpServer" type="Zongsoft.Communication.Net.TcpServer, Zongsoft.CoreLibrary">
+			<object name="Executor" value="{path:../@Executor}">
+				<object name="Filters" value="{path:../@Filters}" />
+				<object name="Pipelines" value="{path:../@Pipelines}" />
+			</object>
+		</object>
+
+		<object name="TcpClient" type="Zongsoft.Communication.Net.TcpClient, Zongsoft.CoreLibrary">
+			<object name="Executor" value="{path:../@Executor}">
+				<object name="Filters" value="{path:../@Filters}" />
+				<object name="Pipelines" value="{path:../@Pipelines}" />
+			</object>
+		</object>
+
+		<object name="FtpServer" configuration="{opt:/Communication/Net/FtpServer}" type="Zongsoft.Communication.Net.FtpServer, Zongsoft.CoreLibrary">
+			<object name="Executor" value="{path:../@Executor}">
+				<object name="Filters" value="{path:../@Filters}" />
+				<object name="Pipelines" value="{path:../@Pipelines}" />
+			</object>
+		</object>
+
+		<object name="FtpClient" type="Zongsoft.Communication.Net.FtpClient, Zongsoft.CoreLibrary" />
+	</extension>
+
+	<!-- 挂载“通讯”相关的选项配置 -->
+	<extension path="/Workbench/Options/Communication/Net">
+		<option name="FtpServer" title="{res:Text.FtpServer}" provider="application" />
+	</extension>
+
+	<!-- 挂载“通讯”相关的各种服务 -->
+	<extension path="/Workspace/Services/Communication">
+		<object name="TcpServer" value="/Workspace/Communication/TcpServer" />
+		<object name="TcpClient" value="/Workspace/Communication/TcpClient" />
+		<object name="FtpServer" value="/Workspace/Communication/FtpServer" />
+		<object name="FtpClient" value="/Workspace/Communication/FtpClient" />
+	</extension>
+
+	<!-- 挂载安全业务 -->
+	<extension path="/Workspace/Security">
+		<object name="CertificationProvider"
+		        cache="{object:Zongsoft.Runtime.Caching.MemoryDictionaryCacheProvider, Zongsoft.CoreLibrary}"
+		        type="Zongsoft.Security.Membership.CertificationProvider, Zongsoft.CoreLibrary" />
+
+		<object name="RoleProvider"
+		        certificationProvider="{path:../CertificationProvider}"
+		        objectAccess="{srv:Data}"
+		        type="Zongsoft.Security.Membership.RoleProvider, Zongsoft.CoreLibrary" />
+
+		<object name="UserProvider"
+		        certificationProvider="{path:../CertificationProvider}"
+		        objectAccess="{srv:Data}"
+		        type="Zongsoft.Security.Membership.UserProvider, Zongsoft.CoreLibrary" />
+
+		<object name="PermissionProvider"
+		        certificationProvider="{path:../CertificationProvider}"
+		        objectAccess="{srv:Data}"
+		        type="Zongsoft.Security.Membership.PermissionProvider, Zongsoft.CoreLibrary" />
+
+		<object name="Authentication"
+		        certificationProvider="{path:../CertificationProvider}"
+		        objectAccess="{srv:Data}"
+		        type="Zongsoft.Security.Membership.Authentication, Zongsoft.CoreLibrary" />
+
+		<object name="Authorization"
+		        certificationProvider="{path:../CertificationProvider}"
+		        permissionProvider="{path:../PermissionProvider}"
+		        roleProvider="{path:../RoleProvider}"
+		        type="Zongsoft.Security.Membership.Authorization, Zongsoft.CoreLibrary" />
+	</extension>
+
+	<!-- 挂载“安全”相关的各种服务 -->
+	<extension path="/Workspace/Services/Security">
+		<object name="CertificationProvider" value="/Workspace/Security/CertificationProvider" />
+		<object name="RoleProvider" value="/Workspace/Security/RoleProvider" />
+		<object name="UserProvider" value="/Workspace/Security/UserProvider" />
+		<object name="PermissionProvider" value="/Workspace/Security/PermissionProvider" />
+		<object name="Authentication" value="/Workspace/Security/Authentication" />
+		<object name="Authorization" value="/Workspace/Security/Authorization" />
+	</extension>
+</plugin>

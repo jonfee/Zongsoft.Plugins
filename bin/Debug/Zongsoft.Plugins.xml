@@ -1,0 +1,1627 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Zongsoft.Plugins</name>
+    </assembly>
+    <members>
+        <member name="M:Zongsoft.Plugins.Application.Exit">
+            <summary>
+            关闭当前应用程序。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.Builders.BuilderBehaviourAttribute">
+            <summary>
+            提供构建器行为约定的特性类。
+            </summary>
+            <remarks>
+            	<para>在特定情况建议使用该类对构建器进行定制。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.PluginContext">
+            <summary>
+            获取当前的插件上下文对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.PluginTree">
+            <summary>
+            获取当前插件上下文中的插件树。
+            </summary>
+            <remarks>
+            	该属性返回值完全等同于<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.PluginContext"/>属性返回的<seealso cref="T:Zongsoft.Plugins.PluginTree"/>对象。
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Parameter">
+            <summary>
+            获取或设置参数对象。
+            </summary>
+            <remarks>
+            	<para>系统对属性不做约定，该属性值取决于特定调用者也可能在中途被其他构建器修改，因此建议使用者尽量不要过于依赖该值。</para>
+            	<para>对构建器实现者的建议：默认的构建动作内部会依次从上至下调用所有子级构件对应的构建动作，在这些层级调用过程中获取该属性值可能只对特定级别的构建器有意义，因此构建器的实现者需要与调用者进行约定，而在某些场合这些约定是难以确保的，因此请谨慎对待该属性值！</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Builtin">
+            <summary>
+            获取当前构建器要操作的构件。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Node">
+            <summary>
+            获取当前构建器需要操作的插件节点，即为<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Builtin"/>属性所指定的构件所属的<see cref="T:Zongsoft.Plugins.PluginTreeNode"/>插件树节点。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Owner">
+            <summary>
+            获取当前节点的所有者对象，即所有者节点对应的目标对象。
+            </summary>
+            <remarks>
+            	<para>获取该属性值不会激发对所有者节点的创建动作，以避免在构建过程中发生无限递归调用。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.OwnerNode">
+            <summary>
+            获取当前节点的所有者节点。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.IsPreserveValue">
+            <summary>
+            获取或设置一个值，表示是否由构建器将<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Value"/>属性值保存到当前对应<seealso cref="T:Zongsoft.Plugins.Builtin"/>构件的<seealso cref="P:Zongsoft.Plugins.Builtin.Value"/>属性中。默认值为真(true)。
+            </summary>
+            <remarks>
+            	<para>注意：如果本属性为真(true)并且<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Value"/>属性返回空值(null)，则将使用<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Result"/>属性值保存到当前对应<seealso cref="T:Zongsoft.Plugins.Builtin"/>构件的<seealso cref="P:Zongsoft.Plugins.Builtin.Value"/>属性中。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Result">
+            <summary>
+            获取或设置由构建器创建的目标对象。
+            </summary>
+            <remarks>
+            	<para>该属性返回值会被添加到<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Owner"/>对象的子集中。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Value">
+            <summary>
+            获取或设置由构建器返回的需要保存到对应<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Builtin"/>构件中对象中的<seealso cref="P:Zongsoft.Plugins.Builtin.Value"/>属性。
+            </summary>
+            <remarks>
+            	<para>该属性返回值会被作为对应<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Builtin"/>的子构件对应目标对象的所有者(即上级对象)。</para>
+            	<para>如果构建器不需要将创建的目标对象保存到<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Builtin"/>构件对象，则可以将该属性值设置为空(null)。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderEventArgs.Builder">
+            <summary>
+            获取当前的构建器对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderEventArgs.Context">
+            <summary>
+            获取当前的构建上下文对象。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.IBuilder">
+            <summary>
+            表示构建器的接口。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.IBuilder.Build(Zongsoft.Plugins.Builders.BuilderContext)">
+            <summary>
+            创建指定构件对应的目标对象。
+            </summary>
+            <returns>创建成功后的目标对象，有关该返回值的详细定义请参考说明部分。</returns>
+            <remarks>
+            	<para>该方法返回值会被作为对应<see cref="T:Zongsoft.Plugins.Builtin"/>的子构件对应目标对象的所有者(即上级对象)。</para>
+            	<para>如果该方法内部设置了<param name="context"/>参数对象中的<seealso cref="!:BuilderContext.Result"/>属性不为空(null)。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.IBuilder.OnBuilt(Zongsoft.Plugins.Builders.BuilderContext)">
+            <summary>
+            当创建完成后由创建管理器调用。
+            </summary>
+            <param name="context">指定的创建器上下文对象。</param>
+            <remarks>
+            	<para>注意：对于创建器的实现者，请在本方法内实现将目标对象添加到所有者对应的子集中去的逻辑，切勿在<see cref="M:Zongsoft.Plugins.IBuilder.Build(Zongsoft.Plugins.Builders.BuilderContext)"/>方法中实现添加逻辑，因为构建逻辑可被外部调用者覆盖，因此务必将创建于添加子集的逻辑分别处理。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.IBuilder.Destroy(Zongsoft.Plugins.Builders.BuilderContext)">
+            <summary>
+            卸载指定构件对应的目标对象。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.Builders.BuilderBase.Build(Zongsoft.Plugins.Builders.BuilderContext)">
+            <summary>
+            创建指定构件对应的目标对象。
+            </summary>
+            <param name="context">调用本方法进行构建的上下文对象，可通过该参数获取构建过程的相关设置或状态。</param>
+            <returns>创建成功后的目标对象。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.Builders.BuilderBase.Destroy(Zongsoft.Plugins.Builders.BuilderContext)">
+            <summary>
+            卸载指定构件对应的目标对象。
+            </summary>
+            <param name="context">调用本方法进行构建的上下文对象，可通过该参数获取构建过程的相关设置或状态。</param>
+            <remarks>
+            	<para>该方法的默认实现步骤如下：</para>
+            	<list type="number">
+            		<item>
+            			<description>如果<paramref name="builtin"/>参数指定的构件有值，则判断其值是否实现了<seealso cref="T:System.IDisposable"/>接口，如果是则调用该接口的Dispose方法。</description>
+            		</item>
+            		<item>
+            			<description>如果<paramref name="builtin"/>参数指定的构件有值，则判断其值是否实现了<seealso cref="T:System.Collections.IEnumerable"/>接口，如果是则遍历重复上面的步骤一过程。</description>
+            		</item>
+            		<item>
+            			<description>将<paramref name="builtin"/>参数指定的构件的Value属性置空。</description>
+            		</item>
+            	</list>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Builders.BuilderBase.Dispose">
+            <summary>
+            当构建器所属的插件被卸载，该方法被调用。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builders.BuilderBase.IgnoredProperties">
+            <summary>
+            获取在创建目标对象时要忽略设置的扩展属性名。
+            </summary>
+            <remarks>
+            	<para>对重写<see cref="!:BuildItem"/>方法的实现者的说明：在构建目标对象后应排除本属性所指定的在Builtin.Properties中的属性项。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Parsers.Parser.Parse(Zongsoft.Plugins.Parsers.ParserContext)">
+            <summary>
+            解析目标对象。
+            </summary>
+            <returns>返回解析后的对象。</returns>
+        </member>
+        <member name="T:Zongsoft.Plugins.IAppender">
+            <summary>
+            提供追加器的功能接口。
+            </summary>
+            <remarks>
+            	<para>由构建器可选性的实现该接口，实现该接口的构建器支持将子级构建器创建的目标对象追加到当前目标对象的特定集合中。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.IAppender.Append(Zongsoft.Plugins.AppenderContext)">
+            <summary>
+            将指定的子级目标对象追加到当前目标对象的特定集合中。
+            </summary>
+            <param name="context">追加器的上下文对象。</param>
+            <returns>如果追加成功则返回真(true)，否则返回假(false)。</returns>
+        </member>
+        <member name="P:Zongsoft.Plugins.BuiltinTypeConstructor.Count">
+            <summary>
+            获取构造子参数的数量。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.Behaviour">
+            <summary>
+            获取当前处理器被激发的原因。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.PluginContext">
+            <summary>
+            获取当前的插件上下文对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.PluginTree">
+            <summary>
+            获取当前插件上下文中的插件树。
+            </summary>
+            <remarks>
+            	该属性返回值完全等同于<see cref="P:Zongsoft.Plugins.AppenderContext.PluginContext"/>属性返回的<seealso cref="T:Zongsoft.Plugins.PluginTree"/>对象。
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.Container">
+            <summary>
+            获取当前节点的所有者对象，即所有者节点对应的目标对象。
+            </summary>
+            <remarks>
+            	<para>获取该属性值不会激发对所有者节点的创建动作，以避免在构建过程中发生无限递归调用。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.ContainerNode">
+            <summary>
+            获取当前节点的所有者节点。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.Node">
+            <summary>
+            获取当前节点对象。
+            </summary>
+            <remarks>
+            	<para>当前节点即表示处理器要操作插件位置对应的插件树节点。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.AppenderContext.Value">
+            <summary>
+            获取当前处理器对应的新值。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.ObtainMode">
+            <summary>
+            表示当获取构件或者插件树节点中内部属性时的方式。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.ObtainMode.Auto">
+            <summary>只有当Value属性为空(null)时，才调用Build方法。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.ObtainMode.Alway">
+            <summary>无论Value属性是否可用，始终调用Build方法。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.ObtainMode.Never">
+            <summary>无论Value属性是否为空，始终返回节点的Value。</summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Parsers.ParserContext.Schema">
+            <summary>
+            获取解析文本的模式(即解析器名称)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Parsers.ParserContext.Text">
+            <summary>
+            获取待解析的不包含解析器名的文本。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Parsers.ParserContext.Builtin">
+            <summary>
+            获取待解析文本所在的构件(<see cref="P:Zongsoft.Plugins.Parsers.ParserContext.Builtin"/>)，注意：该属性可能返回空值(null)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Parsers.ParserContext.Node">
+            <summary>
+            获取待解析文本所在的插件树节点(<see cref="T:Zongsoft.Plugins.PluginTreeNode"/>)，注意：该属性可能返回空值(null)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Parsers.ParserContext.Plugin">
+            <summary>
+            获取待解析文本所在构件或插件树节点所隶属的插件对象，注意：该属性可能返回空值(null)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Parsers.ParserContext.PluginContext">
+            <summary>
+            获取插件应用上下文对象，注意：该属性值可能会为空值(null)。
+            </summary>
+            <remarks>
+            	<para>如果当前解析器上下文关联到一个空节点或者自定义节点，则该属性返回空。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginApplicationContext.CreateWorkbench(System.String[])">
+            <summary>
+            创建一个主窗体对象。
+            </summary>
+            <returns>返回的主窗体对象。</returns>
+            <remarks>
+            通常子类中实现的该方法只是创建空的工作台对象，并没有构建出该工作台下面的子构件。
+            具体构建工作台子构件的最佳时机通常在 Workbench 类的 Open 方法内进行。
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginApplicationContext.CreatePluginSetup">
+            <summary>
+            创建插件启动配置对象。
+            </summary>
+            <returns>返回创建成功的插件启动配置对象。</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginApplicationContext.GetWorkbench(System.String[])">
+            <summary>
+            获取当前应用程序的工作台(主界面)。
+            </summary>
+            <param name="args">初始化的参数。</param>
+            <returns>返回新建或者已创建的工作台对象。</returns>
+            <remarks>
+            <para>如果当前工作台为空(null)则调用 <seealso cref="M:Zongsoft.Plugins.PluginApplicationContext.CreateWorkbench(System.String[])"/> 虚拟方法，以创建工作台对象，并将创建后的对象挂入到由 <see cref="P:Zongsoft.Plugins.PluginSetup.WorkbenchPath"/> 指定的插件树节点中。</para>
+            <para>如果当前插件树还没加载，则将在插件树加载完成事件中将该工作台对象再挂入到由 <see cref="P:Zongsoft.Plugins.PluginSetup.WorkbenchPath"/> 指定的插件树节点中。</para>
+            <para>注意：该属性是线程安全的，在多线程中对该属性的多次调用不会导致重复生成工作台对象。</para>
+            <para>有关子类实现 <seealso cref="M:Zongsoft.Plugins.PluginApplicationContext.CreateWorkbench(System.String[])"/> 虚拟方法的一般性机制请参考该方法的帮助。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginApplicationContext.Workbench">
+            <summary>
+            获取当前应用程序的工作台(主界面)。
+            </summary>
+            <remarks>
+            	<para>必须使用<seealso cref="T:Zongsoft.Plugins.Application"/>类的Start方法，启动应用程序后才能使用该属性获取到创建成功的工作台对象。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginApplicationContext.PluginContext">
+            <summary>
+            获取当前应用程序的插件上下文对象。
+            </summary>
+            <remarks>
+            本属性在首次创建<seealso cref="T:Zongsoft.Plugins.PluginContext"/>时，会调用<see cref="M:Zongsoft.Plugins.PluginApplicationContext.CreatePluginSetup"/>方法以获得插件启动配置参数，如果要提供不同的启动信息，必须重写该虚拟方法。
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginApplicationContext.ServiceFactory">
+            <summary>
+            获取当前应用程序的服务管理对象。
+            </summary>
+            <remarks>该属性与<seealso cref="P:Zongsoft.Plugins.PluginApplicationContext.PluginContext"/>类中的同名属性完全一样。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginExtendedProperty.Name">
+            <summary>
+            获取当前扩展属性的名称。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginExtendedProperty.RawValue">
+            <summary>
+            获取或设置当前扩展属性的原生文本值。
+            </summary>
+            <remarks>
+            	<para>如果该属性发生改变，在下次获取<see cref="P:Zongsoft.Plugins.PluginExtendedProperty.Value"/>属性时将自动引发重新计算。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginExtendedProperty.Plugin">
+            <summary>
+            获取当前扩展属性的定义插件。
+            </summary>
+            <remarks>
+            	<para>注意：该属性值表示本扩展属性是由哪个插件扩展的。因此它未必等同于<see cref="P:Zongsoft.Plugins.PluginExtendedProperty.Owner"/>属性对应的<seealso cref="T:Zongsoft.Plugins.PluginElement"/>类型中的Plugin属性值。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginExtendedProperty.Owner">
+            <summary>
+            获取当前扩展属性的所有者。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginExtendedProperty.Value">
+            <summary>
+            获取当前扩展属性的值。
+            </summary>
+            <remarks>
+            	<para>注意：当该属性值被计算过后就不在重复计算。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginExtendedPropertyCollection.Item(System.String)">
+            <summary>
+            获取指定名称的扩展属性对象。
+            </summary>
+            <param name="name">指定的扩展属性名。</param>
+            <returns>返回的<seealso cref="T:Zongsoft.Plugins.PluginExtendedProperty"/>扩展属性对象，如果指定名称的扩展属性不存在则返回空。</returns>
+        </member>
+        <member name="T:Zongsoft.Plugins.Builtin">
+            <summary>
+            关于构件功能的类，构件是组成插件的基本组成单位。
+            </summary>
+            <remarks>
+            	<para>构件是组成插件的基本组成单位。</para>
+            	<para>构件一旦被创建就属于某个插件，其位于所属插件的<seealso cref="P:Zongsoft.Plugins.Plugin.Builtins"/>集合内，但该构件是否处于插件树中，则取决于其所属的插件是否已经被成功加载，即插件的<seealso cref="!:Zongsoft.Plugins.Plugin.State"/>属性应为<seealso cref="F:Zongsoft.Plugins.PluginStatus.Loaded"/>。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Builtin.GetValueType">
+            <summary>
+            在不构建值的情况下，获取构件值的类型。
+            </summary>
+            <returns>如果<see cref="P:Zongsoft.Plugins.Builtin.HasValue"/>为真(true)则返回<see cref="P:Zongsoft.Plugins.Builtin.Value"/>属性值的类型，否则根据当前构件的插件类型声明进行类型解析。</returns>
+            <remarks>
+            	<para>对于自定义构建器的目标类型，将由构建器标注的<seealso cref="T:Zongsoft.Plugins.Builders.BuilderBehaviourAttribute"/>特性提供，详情请参考它的描述信息。</para>
+            </remarks>
+        </member>
+        <!-- 对于成员“M:Zongsoft.Plugins.Builtin.ResolveValue``1(System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="M:Zongsoft.Plugins.Builtin.ResolveValue``1(System.String,``0)">
+            <summary>
+            解析文本值到指定的类型，指定的文本值支持特定的插件语法。
+            </summary>
+            <typeparam name="T">解析后的目标类型的泛型定义。</typeparam>
+            <param name="value">要解析的文本值。</param>
+            <param name="defaultValue">解析失败返回的默认值。</param>
+            <returns>如果成功解析则返回对应的目标值，否则返回<paramref name="defaultValue"/>参数指定的默认值。</returns>
+            <remarks>有关详细的解析流程，请参考本方法的其他重载说明。</remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Builtin.ResolveValue(System.String,System.Type,System.Object)">
+            <summary>
+            解析文本值到指定的类型，指定的文本值支持特定的插件语法。
+            </summary>
+            <param name="value">要解析的文本值。</param>
+            <param name="valueType">解析后的目标类型。</param>
+            <param name="defaultValue">解析失败返回的默认值。</param>
+            <returns>如果成功解析则返回对应的目标值，否则返回<paramref name="defaultValue"/>参数指定的默认值。</returns>
+            <remarks>
+            	<para>解析处理流程如下：</para>
+            	<list type="bullet">
+            		<item>
+            			<description>如果<paramref name="value"/>参数为空(null)，则返回<paramref name="defaultValue"/>参数指定的默认值。</description>
+            		</item>
+            		<item>
+            			<description>如果<paramref name="value"/>参数为插件路径格式的文本，则获取指定路径的目标对象并进行类型转换。</description>
+            		</item>
+            		<item>
+            			<description>如果<paramref name="value"/>参数为解析器格式的文本，则调用指定的解析器进行解析，并将其解析后的目标对象并进行类型转换。</description>
+            		</item>
+            		<item>
+            			<description>对目标对象或解析后的值进行类型转换。</description>
+            		</item>
+            		<item>
+            			<description>如果<paramref name="valueType"/>参数为空，则<paramref name="value"/>参数值。</description>
+            		</item>
+            		<item>
+            			<description>如果目标对象的类型可隐式转换为<paramref name="valueType"/>参数指定的类型，则返回之。否则获取<paramref name="valueType"/>参数的类型转换器进行转换，如果仍然无法转换则返回<paramref name="defaultValue"/>参数指定的默认值。</description>
+            		</item>
+            	</list>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Context">
+            <summary>
+            获取当前的插件上下文对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Node">
+            <summary>
+            获取当前构件所在的插件树节点，如果当前构件所在插件已被卸载则返回空。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Path">
+            <summary>
+            获取当前构件所位于插件树节点的路径，其等同于<see cref="P:Zongsoft.Plugins.Builtin.Node"/>属性指定的<seealso cref="P:Zongsoft.Plugins.PluginTreeNode.Path"/>值。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.FullPath">
+            <summary>
+            获取当前构件所位于插件树节点的完整路径，其等同于<see cref="P:Zongsoft.Plugins.Builtin.Node"/>属性指定的<seealso cref="P:Zongsoft.Plugins.PluginTreeNode.FullPath"/>值。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.BuilderName">
+            <summary>
+            获取构件的构建器名称，即构件在插件文件中的元素名。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.IsBuilded">
+            <summary>
+            获取构件是否已经构建过，只要构件被构建过该值则返回真，否则返回假。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Position">
+            <summary>
+            获取构件的位置。
+            </summary>
+            <remarks>
+            	<para>
+            	在同级的构件中，通过指定该属性值来调整构件的排列顺序。
+            	</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.HasValue">
+            <summary>
+            获取当前Value是否可用。如果Value不为空(null)则返回真(True)，否则返回假(False)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Value">
+            <summary>
+            获取构件的缓存值，获取该属性值始终不会引发构建动作。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Properties">
+            <summary>
+            获取构件的扩展属性集。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.BuiltinType">
+            <summary>
+            获取构件的类型定义。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.ExitCommand">
+            <summary>
+            退出命令。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.ExitCommand.Run(System.Object)">
+            <summary>
+            执行退出命令。
+            </summary>
+            <param name="context">当前命令的执上下文对象。</param>
+        </member>
+        <member name="T:Zongsoft.Plugins.FailureCodes">
+            <summary>
+            表示插件环境中的各种失败信息的编码。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.Undefined">
+            <summary>未确定的失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.PluginsDirectoryNotExists">
+            <summary>插件目录不存在。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.PluginFileNotExists">
+            <summary>插件文件不存在。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.PluginNameDuplication">
+            <summary>插件命名被重复。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.PluginFileReadFailed">
+            <summary>插件文件读取失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.PluginResolveFailed">
+            <summary>插件文件解析失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.InvalidPluginFileFormat">
+            <summary>无效的插件文件格式。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.UndefinedElementInPluginFile">
+            <summary>插件文件中出现未定义的元素。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.SlavePluginsLoadFailed">
+            <summary>从属插件加载失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.FixedElementBuildFailed">
+            <summary>创建固定元素失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.BuiltinBuildFailed">
+            <summary>创建构件失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.InvalidBuiltinProperty">
+            <summary>无效的构件属性。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.IllegalCharactersInName">
+            <summary>名称中含有非法字符。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.InvalidPath">
+            <summary>无效的路径。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.TypeResolveFailed">
+            <summary>类型解析失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.ParserInvalidFormat">
+            <summary>无效的解析器格式。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.ParserMatchFailed">
+            <summary>解析器匹配失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.ParserObtainFailed">
+            <summary>解析器获取失败。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.InvalidExtendElement">
+            <summary>无效的扩展元素。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FailureCodes.ExtendElementNotExists">
+            <summary>扩展元素不存在。</summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.IsolationLevel">
+            <summary>
+            表示插件的隔离级别。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.IsolationLevel.None">
+            <summary>无隔离，所有插件与宿主在同一个应用域。此模式不支持动态卸载。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.IsolationLevel.PerPlugin">
+            <summary>按插件隔离，表示每个插件均处于单独的应用域。此模式支持动态卸载。</summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.IWorkbench">
+            <summary>
+            表示工作台的接口，包含对工作台的基本行为特性的定义。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.IWorkbenchBase">
+            <summary>
+            表示工作台的接口，包含对工作台的基本行为特性的定义。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.IWorkbenchBase.Close">
+            <summary>
+            关闭工作台。
+            </summary>
+            <returns>如果关闭成功返回真(true)，否则返回假(false)。如果取消关闭操作，亦返回假(false)。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.IWorkbenchBase.Open(System.String[])">
+            <summary>
+            启动工作台。
+            </summary>
+            <param name="args">传入的启动参数。</param>
+        </member>
+        <member name="E:Zongsoft.Plugins.IWorkbenchBase.Opened">
+            <summary>当工作台被打开后。</summary>
+        </member>
+        <member name="E:Zongsoft.Plugins.IWorkbenchBase.Opening">
+            <summary>当工作台被打开前。</summary>
+        </member>
+        <member name="E:Zongsoft.Plugins.IWorkbenchBase.Closed">
+            <summary>当工作台被关闭后。</summary>
+        </member>
+        <member name="E:Zongsoft.Plugins.IWorkbenchBase.Closing">
+            <summary>当工作台被关闭前。</summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.IWorkbenchBase.Status">
+            <summary>
+            获取工作台的当前状态。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.IWorkbenchBase.Title">
+            <summary>
+            获取或设置工作台标题。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.IWorkbench.ActivateView(System.String)">
+            <summary>
+            激活指定名称的视图对象。
+            </summary>
+            <param name="name">视图名称。</param>
+            <returns>被激活的视图对象。</returns>
+        </member>
+        <member name="E:Zongsoft.Plugins.IWorkbench.ViewActivate">
+            <summary>当视图被激活。</summary>
+        </member>
+        <member name="E:Zongsoft.Plugins.IWorkbench.ViewDeactivate">
+            <summary>当视图失去焦点，当视图被关闭时也会触发该事件。</summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.IWorkbench.ActiveView">
+            <summary>
+            获取当前活动的视图对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.IWorkbench.Views">
+            <summary>
+            获取当前工作台的所有打开的视图对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.IWorkbench.Window">
+            <summary>
+            获取当前工作台的窗口对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginDependency.Name">
+            <summary>
+            获取依赖的插件名。注：此名称不是插件的文件名。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginDependency.Plugin">
+            <summary>
+            获取依赖的插件对象。
+            </summary>
+            <remarks>如果插件未加载完成，该属性返回空(null)。</remarks>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginLoader">
+            <summary>
+            关于插件加载的功能。
+            </summary>
+            <remarks>
+            	<para>插件加载器根据一系列策略进行插件加载，可以通过<seealso cref="P:Zongsoft.Plugins.PluginLoader.Plugins"/>或<seealso cref="P:Zongsoft.Plugins.PluginTree.Plugins"/>属性获取加载成功的所有根插件集。</para>
+            	<para>关于插件加载中的相关定义如下：</para>
+            	<list type="table">
+            		<item>
+            			<term>插件根目录</term>
+            			<description>由<seealso cref="P:Zongsoft.Plugins.PluginSetupBase.PluginsDirectory"/>指定的完全限定路径，默认为当前应用程序目录下的Plugins文件夹。</description>
+            		</item>
+            		<item>
+            			<term>插件目录</term>
+            			<description>
+            				<para>位于插件根目录下的子目录或者插件根目录均称为插件目录。不是所有插件根目录下的子目录都是插件子目录，必须包含插件定义文件(*.plugin)的子目录才是插件子目录。</para>
+            				<para>在非插件子目录下的普通子目录之下不支持再加添插件子目录。</para>
+            			</description>
+            		</item>
+            		<item>
+            			<term>父子插件</term>
+            			<description>插件的父子关系只依赖于插件目录的关系，处于上级插件目录中的插件为其下级插件目录中各插件的父插件，一个插件可以有零或多个子插件但是只能有零或一个父插件。有关父子插件的加载策略与关系确定条件请参考后面的说明。</description>
+            		</item>
+            		<item>
+            			<term>插件依赖项</term>
+            			<description>插件依赖项在插件定义文件(*.plugin)中通过&lt;dependencies&gt;节点进行声明。它表示在同级插件中的加载次序，父插件总是在子插件之前加载完成，如果父插件加载失败，系统不会去尝试加载它的子插件。</description>
+            		</item>
+            		<item>
+            			<term>主插件</term>
+            			<description>主插件是相对于插件目录而言的。在插件目录中如果只有一个插件定义文件(*.plugin)，那么这个插件定义文件对应的插件即为该插件目录的主插件；如果目录中有多个插件定义文件，则其中没有任何依赖项的即为主插件，因此目录中主插件可能有多个。</description>
+            		</item>
+            	</list>
+            	
+            	<para>插件的父子关系确定涉及下列步骤：</para>
+            	<list type="number">
+            		<item>
+            			<description>在当前插件目录下如果有子文件夹，则启动子插件的搜索。</description>
+            		</item>
+            		<item>
+            			<description>如果子目录下没有插件定义文件(*.plugin)，则认为当前文件夹为非插件目录，停止子插件的搜索。</description>
+            		</item>
+            		<item>
+            			<description>无论插件根目录是否含有插件定义文件(*.plugin)都将对子目录进行一次子插件的搜索，如果某子目录没有插件定义文件，则停止对该子目录的下级搜索。</description>
+            		</item>
+            		<item>
+            			<description>如果插件目录下有子插件，则这些子插件的父插件为上级插件目录的主插件；当上级插件目录有多个主插件，则他们之间没有从属关系，即为平级关系，并以此类推。</description>
+            		</item>
+            	</list>
+            	
+            	<para>在插件树的加载过程中，插件解析或加载过程出现的异常不会导致整个加载过程的中断，可以通过挂接<seealso cref="!:Failure"/>事件来处理其失败通知，失败的插件不会出现在跟插件集合或对应的父插件子集中。加载器的加载步骤如下：</para>
+            	<list type="number">
+            		<item>
+            			<description>从插件根目录中以插件文件名排序依次预加载插件，预加载成功的根插件进入跟插件集合中。</description>
+            		</item>
+            		<item>
+            			<description>如果预加载插件成功的插件是主插件，则完整的加载它。</description>
+            		</item>
+            		<item>
+            			<description>依次递归预加载子插件目录中的各主插件文件。</description>
+            		</item>
+            		<item>
+            			<description>在系统中所有主插件加载完毕后，则从上向下按级加载从插件。</description>
+            		</item>
+            		<item>
+            			<description>如果从插件集中不能有加载的依赖项或者有循环引用的情况，则这些从插件的状态被置为失败，并从上级插件树列表移除，然后激发<see cref="!:Failrue"/>事件。</description>
+            		</item>
+            		<item>
+            			<description>依次递归预加载子插件目录中的各从插件。</description>
+            		</item>
+            	</list>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginLoader.Load">
+            <summary>
+            使用加载器的当前配置进行插件加载。
+            </summary>
+            <remarks>
+            	<para>在调用该方法前，必须确保当前<seealso cref="P:Zongsoft.Plugins.PluginLoader.Settings"/>属性已被初始化，否则请使用带<seealso cref="T:Zongsoft.Plugins.PluginLoaderSetup"/>类型参数的Load方法重载版本。</para>
+            	<para>通过<seealso cref="P:Zongsoft.Plugins.PluginTree.Loader"/>属性获取的加载器对象默认已经通过<seealso cref="T:Zongsoft.Plugins.PluginContext"/>上下文对象的Settings属性初始化过加载器的<see cref="!:Zongsoft.Plugins.LoaderSettings"/>配置对象。</para>
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">当前Settings属性没有设置，即其值为空(null)。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginLoader.Load(Zongsoft.Plugins.PluginLoaderSetup)">
+            <summary>
+            应用指定的加载配置进行插件加载。
+            </summary>
+            <param name="settings">指定的加载配置对象。</param>
+            <remarks>
+            	<para>使用不同的<see cref="T:Zongsoft.Plugins.PluginLoaderSetup"/>设置项多次加载，会导致最后一次加载覆盖上次加载的插件结构，这有可能会影响您的插件应用对构件或服务的获取路径，从而导致不可预知的结果。</para>
+            	<para>如果要重用上次加载的配置，请调用无参的Load方法。</para>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">参数<paramref name="settings"/>为空(null)。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginLoader.Unload">
+            <summary>
+            卸载所有插件。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginLoader.Unload(Zongsoft.Plugins.Plugin)">
+            <summary>
+            卸载指定的插件。
+            </summary>
+            <param name="plugin">指定要卸载的插件。</param>
+            <remarks>
+            	<para>如果指定的插件状态不是已经加载的（即插件对象的Status属性值不等于<seealso cref="F:Zongsoft.Plugins.PluginStatus.Loaded"/>），则不能对其进行卸载。</para>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="plugin"/>参数为空(null)。</exception>
+        </member>
+        <member name="E:Zongsoft.Plugins.PluginLoader.Loaded">
+            <summary>表示所有插件加载完成。</summary>
+            <remarks>该事件由Load方法激发。只要Load被执行，该事件总会被激发，无论加载过程是否异常。</remarks>
+        </member>
+        <member name="E:Zongsoft.Plugins.PluginLoader.Loading">
+            <summary>表示开始进行整体插件加载。</summary>
+            <remarks>该事件由Load方法激发，只要Load被执行，该事件总是第一个被激发。</remarks>
+        </member>
+        <member name="E:Zongsoft.Plugins.PluginLoader.PluginLoaded">
+            <summary>表示单个插件加载完成。</summary>
+            <remarks>该事件由Load方法激发，在对应的<seealso cref="E:Zongsoft.Plugins.PluginLoader.PluginLoading"/>事件被激发后，该事件不一定总会得到激发，因为加载过程可能出现异常。在<seealso cref="T:Zongsoft.Plugins.PluginLoadedEventArgs"/>事件参数中通过Plugin属性获取到成功加载的插件对象。</remarks>
+        </member>
+        <member name="E:Zongsoft.Plugins.PluginLoader.PluginLoading">
+            <summary>表示单个插件开始加载。</summary>
+            <remarks>该事件由Load方法激发，在每次加载到相应的插件会得到激发。</remarks>
+        </member>
+        <member name="E:Zongsoft.Plugins.PluginLoader.PluginUnloaded">
+            <summary>表示单个插件卸载完成。</summary>
+            <remarks>该事件由Unload方法激发，在对应的<seealso cref="E:Zongsoft.Plugins.PluginLoader.PluginUnloading"/>事件被激发后，该事件不一定总会得到激发，因为卸载过程可能出现异常。在<seealso cref="T:Zongsoft.Plugins.PluginUnloadedEventArgs"/>事件参数中通过Plugin属性获取到成功卸载的插件对象。</remarks>
+        </member>
+        <member name="E:Zongsoft.Plugins.PluginLoader.PluginUnloading">
+            <summary>表示单个插件开始卸载。</summary>
+            <remarks>该事件由Unload方法激发，在每次卸载指定的插件会得到激发。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginLoader.Plugins">
+            <summary>
+            获取加载的根插件对象集。
+            </summary>
+            <remarks>如果加载器尚未加载过，则返回一个空集。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginLoader.Settings">
+            <summary>
+            获取加载器的当前加载配置对象。该属性值可通过带参的<seealso cref="M:Zongsoft.Plugins.PluginLoader.Load"/>方法注入。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginSetupBase.#ctor">
+            <summary>
+            构造插件设置对象。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginSetupBase.#ctor(System.String)">
+            <summary>
+            构造插件设置对象。
+            </summary>
+            <param name="applicationDirectory">应用程序目录完整限定路径。</param>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginSetupBase.#ctor(System.String,System.String)">
+            <summary>
+            构造插件设置对象。
+            </summary>
+            <param name="applicationDirectory">应用程序目录完整限定路径。</param>
+            <param name="pluginsDirectoryName">插件目录名，非完整路径。默认为 plugins</param>
+            <remarks>
+            	如果<paramref name="applicationDirectory"/>参数为空或空字符串("")，则试图获取默认应用域(AppDomain)中的入口程序集路径。但在类似ASP.NET这样的服务器程序中无法获取入口程序集，因此本方法会抛出<seealso cref="T:System.ArgumentNullException"/>异常，在此场景下请指定<paramref name="applicationDirectory"/>参数值。
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="applicationDirectory"/>参数为空并且无法获取默认应用域(AppDomain)中入口程序集。</exception>
+            <exception cref="T:System.ArgumentException">当<paramref name="applicationDirectory"/>参数值不为路径完全限定格式。</exception>
+            <exception cref="T:System.ArgumentException">当<paramref name="pluginsDirectoryName"/>参数值为路径完全限定格式，但其并不是基于<paramref name="applicationDirectory"/>参数指定的应用程序路径下的子目录。</exception>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginSetupBase.ApplicationDirectory">
+            <summary>
+            获取应用程序的目录路径，该属性值由构造函数注入。
+            </summary>
+            <remarks>
+            应用目录是基于完全限定的路径格式，在Windows操作系统中大致如：C:\Program Files\Zongsoft.EAS 或 D:\Zongsoft\Zongsoft.EAS 等等。
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginSetupBase.PluginsDirectoryName">
+            <summary>
+            获取插件文件夹名称，该属性值由构造函数注入。
+            </summary>
+            <remarks>
+            注意：该属性值仅为目录名本身，不含其它路径部分。它不是一个完全限定的路径格式。如果要获取插件文件夹的完全限定路径，请使用<seealso cref="P:Zongsoft.Plugins.PluginSetupBase.PluginsDirectory"/>属性。
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginSetupBase.PluginsDirectory">
+            <summary>
+            获取插件文件夹的完全限定路径。
+            </summary>
+            <remarks>
+            该属性值根据<seealso cref="P:Zongsoft.Plugins.PluginSetupBase.ApplicationDirectory"/>和<seealso cref="P:Zongsoft.Plugins.PluginSetupBase.PluginsDirectoryName"/>属性值合并计算而来。
+            </remarks>
+        </member>
+        <member name="T:Zongsoft.Plugins.Plugin">
+            <summary>
+            关于插件的描述信息。
+            </summary>
+            <remarks>
+            	<para>该类重写了<seealso cref="T:System.Object"/>的<seealso cref="M:System.Object.ToString"/>和<seealso cref="M:System.Object.Equals(System.Object)"/>方法。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.#ctor(Zongsoft.Plugins.PluginTree,System.String,System.String,Zongsoft.Plugins.Plugin)">
+            <summary>
+            创建插件对象。
+            </summary>
+            <param name="pluginTree">依附的插件树对象。</param>
+            <param name="name">插件名称，该名称必须在同级插件中唯一。</param>
+            <param name="fileName">插件的定义文件名(完整路径)。</param>
+            <param name="parent">所属的父插件。</param>
+            <remarks>创建的插件对象，并没有被加入到<paramref name="parent"/>参数指定的父插件的子集中(<seealso cref="P:Zongsoft.Plugins.Plugin.Children"/>)。</remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetBuilder(System.String)">
+            <summary>
+            获取指定构件的构建器。
+            </summary>
+            <param name="builderName">指定的构建器名称。</param>
+            <returns>如果找到对应的构建器则返回构建器对象，否则返回空(null)。</returns>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="builderName"/>参数为空(null)或空白字符。</exception>
+            <remarks>
+            <para>查找构建器的流程如下：</para>
+            <list type="number">
+            	<item>
+            		<term>在当前插件的构建器集合中查找指定名称的构建器，如果找到则返回，否则继续；</term>
+            		<term>依次在当前插件的依赖插件的构建器集合中查找指定名称的构建器，如果找到则返回，否则递归重复该项查找；</term>
+            		<term>在当前插件的父插件的构建器集合中查找，如果找到则返回；</term>
+            		<term>查找失败，返回空(null)。</term>
+            	</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetParser(System.String)">
+            <summary>
+            获取指定构件的解析器。
+            </summary>
+            <param name="builderName">指定的解析器名称。</param>
+            <returns>如果找到对应的解析器则返回解析器对象，否则返回空(null)。</returns>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="parserName"/>参数为空(null)或空白字符。</exception>
+            <remarks>
+            <para>查找解析器的流程如下：</para>
+            <list type="number">
+            	<item>
+            		<term>在当前插件的解析器集合中查找指定名称的解析器，如果找到则返回，否则继续；</term>
+            		<term>依次在当前插件的依赖插件的解析器集合中查找指定名称的解析器，如果找到则返回，否则递归重复该项查找；</term>
+            		<term>在当前插件的父插件的解析器集合中查找，如果找到则返回；</term>
+            		<term>查找失败，返回空(null)。</term>
+            	</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetSiblings">
+            <summary>
+            获取当前插件的所有同级兄弟插件。
+            </summary>
+            <returns>返回的同级兄弟插件集合，该结果集中始终不包含当前插件对象。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetSiblings(System.Boolean,System.Boolean)">
+            <summary>
+            获取当前插件的同级兄弟插件。
+            </summary>
+            <param name="containsMasters">指示返回的插件集是否包含类型为主插件的兄弟插件。</param>
+            <param name="containsSlaves">指示返回的插件集是否包含类型为从插件的兄弟插件。</param>
+            <returns>返回的同级兄弟插件集合，该结果集中始终不包含当前插件对象。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetSiblings(System.Predicate{Zongsoft.Plugins.Plugin})">
+            <summary>
+            根据指定的判断依据获取当前插件的同级兄弟插件。
+            </summary>
+            <param name="match">指定要搜索的同级插件的条件，该委托返回真(True)表示传入同级插件对象符合过滤条件，否则将其排除在外。</param>
+            <returns>返回的同级兄弟插件集合，该结果集中始终不包含当前插件对象。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetMasters">
+            <summary>
+            搜索当前插件的主插件集。
+            </summary>
+            <returns>包含当前插件依赖项中的主插件集合，如果当前插件为主插件则返回空集。</returns>
+            <exception cref="T:System.InvalidOperationException">当插件树尚未初始化，即<seealso cref="P:Zongsoft.Plugins.PluginTree.Status"/>属性值为<seealso cref="F:Zongsoft.Plugins.PluginTreeStatus.None"/>时。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetSlaves">
+            <summary>
+            搜索当前插件的直隶附属插件集。
+            </summary>
+            <returns>只包含当前插件的直隶附属插件集合。</returns>
+            <exception cref="T:System.InvalidOperationException">当插件树尚未初始化，即<seealso cref="P:Zongsoft.Plugins.PluginTree.Status"/>属性值为<seealso cref="F:Zongsoft.Plugins.PluginTreeStatus.None"/>时。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.GetSlaves(System.Boolean)">
+            <summary>
+            搜索当前插件的附属插件集。
+            </summary>
+            <param name="containsAll">指示返回的结果集中是否要包含所有的间接被依赖项。</param>
+            <returns>包含满足搜索选项的附属插件集合。</returns>
+            <exception cref="T:System.InvalidOperationException">当插件树尚未初始化，即<seealso cref="P:Zongsoft.Plugins.PluginTree.Status"/>属性值为<seealso cref="F:Zongsoft.Plugins.PluginTreeStatus.None"/>时。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.ToString">
+            <summary>
+            重写了<seealso cref="T:System.Object"/>类的同名方法。
+            </summary>
+            <returns>返回当前插件的名称和文件名。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.Plugin.Equals(System.Object)">
+            <summary>
+            确定与指定的插件对象是否相等。
+            </summary>
+            <param name="obj">与当前插件相比较的插件对象。</param>
+            <returns>如果指定的<seealso cref="T:Zongsoft.Plugins.Plugin"/>等于当前的<seealso cref="T:Zongsoft.Plugins.Plugin"/>，则为 true；否则为 false。</returns>
+            <remarks>该相等性是按照插件的<see cref="P:Zongsoft.Plugins.Plugin.FilePath"/>文件名进行不区分大小写比较。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginTree">
+            <summary>
+            获取插件树对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Name">
+            <summary>
+            获取插件名。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.FilePath">
+            <summary>
+            获取插件的文件路径，该属性值为完全限定路径格式，即包含完整路径和文件名。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Manifest">
+            <summary>
+            获取插件清单描述对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.IsMaster">
+            <summary>
+            获取当前插件是否为主插件，即没有依赖项的插件。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.IsSlave">
+            <summary>
+            获取当前插件是否为从插件，即含有依赖项的插件。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Status">
+            <summary>
+            获取当前插件的状态。
+            </summary>
+            <remarks>
+            	<para>该属性值为<see cref="F:Zongsoft.Plugins.PluginStatus.Failed"/>时，表示插件在插件的解析或加载过程发生了错误，该状态的插件不会出现在根插件集或对应父插件的子集中。</para>
+            	<para>如果要处理插件在解析或加载过程中发生的异常情况，请使用<seealso cref="!:Zongsoft.Plugins.PluginLoader.Failure"/>事件。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.StatusDescription">
+            <summary>
+            获取当前插件状态的描述文本。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Context">
+            <summary>
+            获取插件上下文对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Parent">
+            <summary>
+            获取当前插件的父插件对象。
+            </summary>
+            <remarks>关于父插件定义和父插件的搜索策略，请参考<seealso cref="T:Zongsoft.Plugins.PluginLoader"/>类的帮助。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Children">
+            <summary>
+            获取当前插件的子插件集合。
+            </summary>
+            <remarks>关于父插件定义和父插件的搜索策略，请参考<seealso cref="T:Zongsoft.Plugins.PluginLoader"/>类的帮助。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Builtins">
+            <summary>
+            获取当前插件中的所有构件对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Builders">
+            <summary>
+            获取当前插件的所有构建器集合。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Modules">
+            <summary>
+            获取当前插件的所有模块元素集合。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.Parsers">
+            <summary>
+            获取当前插件的所有解析器元素集合。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Title">
+            <summary>
+            获取插件的标题描述文本。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Author">
+            <summary>
+            获取插件的作者信息。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Version">
+            <summary>
+            获取插件的版本信息。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Copyright">
+            <summary>
+            获取插件的版权声明。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Description">
+            <summary>
+            获取插件的描述信息。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Assemblies">
+            <summary>
+            获取插件的宿主程序集数组。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Plugin.PluginManifest.Dependencies">
+            <summary>
+            获取插件的依赖项集合。
+            </summary>
+            <remarks>
+            依赖项通过插件定义文件(*.plugin)中的&lt;dependencies&gt;节点进行声明。依赖项只表明插件的加载顺序，并无类型依赖的暗喻。
+            </remarks>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginCollection">
+            <summary>
+            表示插件集合。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginCollection.Add(Zongsoft.Plugins.Plugin,System.Boolean)">
+            <summary>
+            将指定的插件对象加入当前的集合中。
+            </summary>
+            <param name="item">带加入的插件对象。</param>
+            <param name="thorwExceptionOnDuplicationName">指示当前的插件名如果在集合中已经存在是否抛出异常。</param>
+            <returns>添加成功则返回真(True)，否则返回假(False)。</returns>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="item"/>参数为空(null)。</exception>
+            <exception cref="T:System.InvalidOperationException">当<paramref name="item"/>参数的<see cref="P:Zongsoft.Plugins.Plugin.Parent"/>父插件属性不为空，并且与当前集合的所有者不是同一个引用对象。</exception>
+            <exception cref="T:Zongsoft.Plugins.PluginException">当<paramref name="thorwExceptionOnDuplicationName"/>参数为真(True)，并且待加入的插件名与当前集合中插件发生重名。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginCollection.System#Collections#Generic#ICollection{Zongsoft#Plugins#Plugin}#Add(Zongsoft.Plugins.Plugin)">
+            <summary>
+            没有实现，调用该方法会抛出异常。
+            </summary>
+            <param name="item">该方法没有实现，不要调用。</param>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginCollection.System#Collections#Generic#ICollection{Zongsoft#Plugins#Plugin}#Clear">
+            <summary>
+            没有实现，调用该方法会抛出异常。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginCollection.System#Collections#Generic#ICollection{Zongsoft#Plugins#Plugin}#Remove(Zongsoft.Plugins.Plugin)">
+            <summary>
+            没有实现，调用该方法会抛出异常。
+            </summary>
+            <param name="item">该方法没有实现，不要调用。</param>
+            <returns>该方法没有实现，不要调用。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginCollection.System#Collections#Generic#ICollection{Zongsoft#Plugins#Plugin}#CopyTo(Zongsoft.Plugins.Plugin[],System.Int32)">
+            <summary>
+            没有实现，调用该方法会抛出异常。
+            </summary>
+            <param name="array">该方法没有实现，不要调用。</param>
+            <param name="arrayIndex">该方法没有实现，不要调用。</param>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginContext">
+            <summary>
+            封装了有关插件特定的信息。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginContext.ResolvePath(System.String)">
+            <summary>
+            根据指定的路径文本获取其对应的缓存对象或该对象的成员值。
+            </summary>
+            <param name="pathText">要获取的路径文本，该文本可以用过句点符号(.)表示缓存对象的成员名。</param>
+            <returns>返回获取的缓存对象或其成员值。</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="pathText"/>参数为空或全空字符串。</exception>
+            <exception cref="T:System.ArgumentException">参数中包含成员名，但是在该缓存对象中并没找到其成员。</exception>
+            <remarks>
+            注意：成员名只能是公共的实例属性或字段。
+            <example>/Workspace/Environment/ApplicationContext.ApplicationId</example>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.PluginTree">
+            <summary>
+            获取当前插件运行时的唯一插件树对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.ApplicationContext">
+            <summary>
+            获取当前插件运行时所属的应用程序上下文对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.Tracer">
+            <summary>
+            获取当前插件运行时的跟踪对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.ServiceFactory">
+            <summary>
+            获取当前插件运行时的服务供应程序工厂。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.Settings">
+            <summary>
+            获取当前插件上下文对应的设置。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.IsolationLevel">
+            <summary>
+            获取插件的隔离级别。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.Workbench">
+            <summary>
+            获取当前工作台(主界面)对象。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginPathType">
+            <summary>
+            表示插件路径的类型。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginPathType.Rooted">
+            <summary>基于根节点的绝对路径。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginPathType.Parent">
+            <summary>相对于父节点的路径。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginPathType.Current">
+            <summary>相对于当前节点的路径。</summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginPath">
+            <summary>
+            提供插件路径文本的解析功能。
+            </summary>
+            <remarks>
+            	<para>插件路径文本支持以下几种格式：</para>
+            	<list type="number">
+            		<item>
+            			<term>绝对路径：/root/node1/node2/node3.property1.property2</term>
+            			<term>相对路径：../siblingNode/node1/node2.property1.property2 或者 ./childNode/node1/node2.property1.property2</term>
+            			<term>属性路径：../@property1.property2 或者 ./@property1.property2（对于本节点的属性也可以简写成：@property1.property2）</term>
+            		</item>
+            	</list>
+            </remarks>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginSetup">
+            <summary>
+            有关插件运行环境的设置信息。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginSetup.IsolationLevel">
+            <summary>
+            获取或设置插件的隔离级别。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginSetup.ApplicationContextPath">
+            <summary>
+            获取或设置<seealso cref="!:Zongsoft.ComponentModels.ApplicationContextBase"/>工作台位于插件树的路径。默认值为：/Workspace/Environment/ApplicationContext
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginSetup.WorkbenchPath">
+            <summary>
+            获取或设置<seealso cref="T:Zongsoft.Plugins.IWorkbenchBase"/>工作台位于插件树的路径。默认值为：/Workbench
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginStatus">
+            <summary>
+            表示插件的状态。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginStatus.None">
+            <summary>尚未加载，表示插件刚创建。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginStatus.Loading">
+            <summary>表示插件正在加载。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginStatus.Loaded">
+            <summary>表示插件已经成功加载。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginStatus.Unloading">
+            <summary>表示插件正在卸载。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginStatus.Unloaded">
+            <summary>表示插件已经被卸载。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginStatus.Failed">
+            <summary>表示插件在解析或加过程载中出现错误，该状态的插件的构件不会被挂载到系统中。</summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Load">
+            <summary>
+            使用默认加载配置加载插件树。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Load(Zongsoft.Plugins.PluginLoaderSetup)">
+            <summary>
+            应用指定的设置加载插件树。
+            </summary>
+            <param name="settings">指定的插件加载器配置对象。</param>
+            <exception cref="T:System.ArgumentNullException">参数<paramref name="settings"/>为空(null)。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Unload">
+            <summary>
+            卸载当前插件树中的所有插件。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Build(System.String)">
+            <summary>
+            生成指定路径下的目标对象。
+            </summary>
+            <param name="path">指定要构建的路径。</param>
+            <returns>返回构建成功的目标，如果指定的路径不存在则返回空(null)。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Build(System.String,System.Object)">
+            <summary>
+            生成指定路径下的目标对象。
+            </summary>
+            <param name="path">指定要构建的路径。</param>
+            <param name="parameter">调用者需要传递给构建器的参数对象。</param>
+            <returns>返回构建成功的目标，如果指定的路径不存在则返回空(null)。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Build(Zongsoft.Plugins.PluginTreeNode,System.Object,System.Action{Zongsoft.Plugins.Builders.BuilderContext})">
+            <summary>
+            生成指定插件节点对应的目标对象。
+            </summary>
+            <param name="node">指定要构建的插件树节点。</param>
+            <param name="parameter">调用者需要传递给构建器的参数对象。</param>
+            <param name="build">由调用者指定的构建委托，如果为空则使用对应的构建器的构建动作。</param>
+            <returns>返回构建成功的目标，如果指定的<paramref name="node"/>类型不是<see cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>则返回节点的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Value"/>属性值。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Find(System.String)">
+            <summary>
+            查找指定路径的插件树节点。
+            </summary>
+            <param name="path">指定的路径。</param>
+            <returns>如果查找成功则返回对应的插件树节点对象，否则返回空(null)。</returns>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="path"/>参数为空或全空格字符串。</exception>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.EnsurePath(System.String)">
+            <summary>
+            获取或创建指定路径的插件树节点。
+            </summary>
+            <param name="path">要获取或创建的插件路径。</param>
+            <returns>返回存在的或者新建的节点对象，如果指定的<paramref name="path"/>路径参数是已存在的，则返回其对应的节点对象否则新建该节点。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.EnsurePath(System.String,System.String)">
+            <summary>
+            获取或创建指定路径的插件树节点。
+            </summary>
+            <param name="path">要获取或创建的插件路径。</param>
+            <param name="position">当创建指定路径对应的叶子节点时，由该参数确认其插入的位置，如果该参数为空(null)或空字符串则默认追加到同级节点的最后。</param>
+            <returns>返回存在的或者新建的节点对象，如果指定的<paramref name="path"/>路径参数是已存在的，则返回其对应的节点对象否则新建该节点。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.EnsurePath(System.String,System.Boolean@)">
+            <summary>
+            获取或创建指定路径的插件树节点。
+            </summary>
+            <param name="path">要获取或创建的插件路径。</param>
+            <param name="existed">输出参数，如果指定的路径已存在则返回真(true)，否则返回假(false)。</param>
+            <returns>返回存在的或者新建的节点对象，如果指定的<paramref name="path"/>路径参数是已存在的，则返回其对应的节点对象否则新建该节点。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.EnsurePath(System.String,System.String,System.Boolean@)">
+            <summary>
+            获取或创建指定路径的插件树节点。
+            </summary>
+            <param name="path">要获取或创建的插件路径。</param>
+            <param name="position">当创建指定路径对应的叶子节点时，由该参数确认其插入的位置，如果该参数为空(null)或空字符串则默认追加到同级节点的最后。</param>
+            <param name="existed">输出参数，如果指定的路径已存在则返回真(true)，否则返回假(false)。</param>
+            <returns>返回存在的或者新建的节点对象，如果指定的<paramref name="path"/>路径参数是已存在的，则返回其对应的节点对象否则新建该节点。</returns>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Mount(System.String,System.Object)">
+            <summary>
+            挂载对象到插件树中。
+            </summary>
+            <param name="path">要挂载的路径。</param>
+            <param name="value">要挂载的对象。</param>
+            <returns>挂载成功则返回真(True)否则返回假(False)。</returns>
+            <remarks>
+            	<para>注意：如果<paramref name="path"/>参数指定的路径对应的插件树节点已经存在，并且节点类型为<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>或者<seealso cref="!:Zongsoft.Plugins.PluginTreeNodeType.FixedElement"/>则返回假(False)。</para>
+            	<para>如果符合上面的条件，则激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounting"/>事件，挂入成功后激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounted"/>事件。</para>
+            	<para>如果<paramref name="path"/>参数指定的路径不存在，则创建它并挂载由<paramref name="value"/>参数指定的对象。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Mount(System.String,System.Object,System.String)">
+            <summary>
+            挂载对象到插件树中。
+            </summary>
+            <param name="path">要挂载的路径。</param>
+            <param name="value">要挂载的对象。</param>
+            <param name="position">当挂载路径对应的叶子节点不存在时，由该参数确认其插入的位置，如果该参数为空(null)或空字符串则默认追加到同级节点的最后。</param>
+            <returns>挂载成功则返回真(True)否则返回假(False)。</returns>
+            <remarks>
+            	<para>注意：如果<paramref name="path"/>参数指定的路径对应的插件树节点已经存在，并且节点类型为<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>或者<seealso cref="!:Zongsoft.Plugins.PluginTreeNodeType.FixedElement"/>则返回假(False)。</para>
+            	<para>如果符合上面的条件，则激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounting"/>事件，挂入成功后激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounted"/>事件。</para>
+            	<para>如果<paramref name="path"/>参数指定的路径不存在，则创建它并挂载由<paramref name="value"/>参数指定的对象。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Unmount(System.String)">
+            <summary>
+            卸载指定路径的自定义对象。
+            </summary>
+            <param name="path">指定要卸载的路径。</param>
+            <returns>如果成功卸载则返回真(True)，否则返回假(False)。</returns>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="path"/>参数为空或全空字符串。</exception>
+            <exception cref="T:System.ArgumentException">当<paramref name="path"/>参数对应的节点对象的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Tree"/>属性与当前插件树对象不是同一个引用。</exception>
+            <remarks>
+            	<para>如果<paramref name="path"/>参数指定的路径不存在，则返回失败。</para>
+            	<para>如果<paramref name="path"/>参数对应的<seealso cref="T:Zongsoft.Plugins.PluginTreeNode"/>对象的节点类型(即<seealso cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>属性)不是自定义对象，则返回失败。</para>
+            	<para>有关本方法的卸载逻辑请参考<see cref="M:Zongsoft.Plugins.PluginTree.Unmount(Zongsoft.Plugins.PluginTreeNode)"/>重载方法。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.Unmount(Zongsoft.Plugins.PluginTreeNode)">
+            <summary>
+            卸载指定插件树节点对应的自定义对象。
+            </summary>
+            <param name="node">指定要卸载对象的挂靠节点。</param>
+            <returns>如果成功卸载则返回真(True)，否则返回假(False)。</returns>
+            <exception cref="T:System.ArgumentNullException">当<paramref name="node"/>参数为空(null)。</exception>
+            <exception cref="T:System.ArgumentException">当<paramref name="node"/>参数的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Tree"/>属性与当前插件树对象不是同一个引用。</exception>
+            <remarks>
+            	<para>如果<paramref name="node"/>参数指定的节点对象的节点类型(即<seealso cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>属性)不是自定义对象，则返回失败。</para>
+            	<para>如果<paramref name="node"/>参数指定的节点对象的Value属性值实现了<seealso cref="T:System.IDisposable"/>接口，则调用该接口的Dispose方法。</para>
+            	<para>将<paramref name="node"/>参数指定的节点对象的Value属性置空，导致该节点类型成为路径节点(即空节点)。</para>
+            	<para>如果<paramref name="node"/>参数指定的节点对象没有子节点了，则将该节点从插件树中删除，否则保留。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTree.GetOwner(Zongsoft.Plugins.PluginTreeNode)">
+            <summary>
+            获取指定节点的所有者对象。
+            </summary>
+            <param name="node">要获取的所有者对象的节点。</param>
+            <returns>返回指定节点的所有者对象，如果没有则返回空(null)。</returns>
+            <remarks>
+            	<para>注意：该方法不会引起上级节点的创建动作，可确保在<see cref="!:Zongsoft.Plugins.Builder"/>构建器中使用而不会导致循环创建的问题。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTree.Loader">
+            <summary>
+            获取当前插件加载器对象。
+            </summary>
+            <remarks>
+            如果插件加载器没有创建，则在本属性获取器中即时创建它。
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTree.RootNode">
+            <summary>
+            获取插件树中的根节点。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTree.Plugins">
+            <summary>
+            获取加载的根插件集。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTreeNode.Find(System.String)">
+            <summary>
+            查找相对于当前节点的路径的插件树节点。
+            </summary>
+            <param name="path">指定的相对路径。</param>
+            <returns>如果查找成功则返回对应的插件树节点对象，否则返回空(null)。</returns>
+            <remarks>
+            	<para><paramref name="path"/>参数支持以(.)或(..)打头的相对路径，注意：不支持绝对路径。</para>
+            </remarks>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginTreeNode.UnwrapValue(Zongsoft.Plugins.ObtainMode,System.Object)">
+            <summary>
+            打开当前节点值，以获取目标对象。
+            </summary>
+            <param name="obtainMode">构件值的获取方式。</param>
+            <param name="parameter">自定义的参数对象。</param>
+            <returns>返回的目标对象或节点值。</returns>
+            <remarks>只有当节点类型<see cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>为构件(<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>)，返回其对应的Builtin的目标值。如果是<see cref="F:Zongsoft.Plugins.PluginTreeNodeType.Custom"/>类型则返回节点值本身；如果是空节点类型则返回空(null)。</remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.NodeType">
+            <summary>
+            获取插件树节点的类型。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.Value">
+            <summary>
+            获取当前插件树节点挂载的对象。
+            </summary>
+            <remarks>
+            	<list type="number">
+            		<item>
+            			<term>如果当前<see cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>属性为Empty，则返回空(null)。</term>
+            		</item>
+            		<item>
+            			<term>如果当前<see cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>属性为Builtin，则返回对应的<seealso cref="T:Zongsoft.Plugins.Builtin"/>对象。</term>
+            		</item>
+            		<item>
+            			<term>如果当前<see cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>属性为Custom，则返回对应的自定义对象。</term>
+            		</item>
+            	</list>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.ValueType">
+            <summary>
+            获取节点中挂载的目标对象类型，如果节点类型为<see cref="F:Zongsoft.Plugins.PluginTreeNodeType.Empty"/>则返回空(null)，该属性始终不会引发目标对象的创建动作。
+            </summary>
+            <remarks>
+            	<para>注意：该方法不会激发节点类型为<see cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>的创建动作，因此适合在不需要获取目标值的场景中使用该方法来获取其类型。</para>
+            	<para>当节点类型为<see cref="!:PluginTreeNode.Builtin"/>时的更详细行为请参考<seealso cref="M:Zongsoft.Plugins.Builtin.GetValueType"/>方法的描述信息。</para>
+            </remarks>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.Tree">
+            <summary>
+            获取插件树节点所在的插件树对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.Parent">
+            <summary>
+            获取插件树节点的父级节点。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.Children">
+            <summary>
+            获取插件树节点的子级节点集。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.Path">
+            <summary>
+            获取插件树节点的路径，该路径不含当前节点名称，如果是根节点则返回空字符串("")。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.FullPath">
+            <summary>
+            获取插件树节点的完整路径，该路径包含当前节点的名称。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.Properties">
+            <summary>
+            获取插件节点的扩展属性集。
+            </summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginTreeNodeType">
+            <summary>
+            表示插件树节点的类型。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginTreeNodeType.Empty">
+            <summary>空节点(路径节点)，即该节点的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Value"/>属性为空。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin">
+            <summary>构件节点，即该节点的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Value"/>属性值的类型为<seealso cref="T:Zongsoft.Plugins.Builtin"/>。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginTreeNodeType.Custom">
+            <summary>自定义节点，即该节点对应的值为内部挂载的自定义对象。</summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.PluginTreeStatus">
+            <summary>
+            表示插件树的当前状态。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginTreeStatus.None">
+            <summary>未初始化。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginTreeStatus.Loading">
+            <summary>加载进行中。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.PluginTreeStatus.Loaded">
+            <summary>已加载完成。</summary>
+        </member>
+        <member name="M:Zongsoft.Services.Plugins.ServiceProvider.ToString">
+            <summary>
+            返回服务供应程序的描述文本，该格式为：[Path]{Type.FullName}
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.ServiceProvider.Path">
+            <summary>
+            获取或设置当前服务供应程序注册在其下各服务对象在插件树中的路径。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.ServiceProvider.Context">
+            <summary>
+            获取插件上下文对象。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.PluginUtility.GetType(System.String)">
+            <summary>
+            根据指定的类型限定名动态加载并返回对应的<seealso cref="T:System.Type"/>，如果查找失败亦不会抛出异常。
+            </summary>
+            <param name="typeFullName">要获取的类型限定名称。</param>
+            <returns>返回加载成功的类型对象，如果加载失败则返回空(null)。</returns>
+        </member>
+        <member name="T:Zongsoft.Plugins.FixedElementType">
+            <summary>
+            表示固定元件的类型。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FixedElementType.Builder">
+            <summary>构建器，指实现了 <seealso cref="T:Zongsoft.Plugins.IBuilder"/> 接口的类。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FixedElementType.Parser">
+            <summary>解析器，指实现了 <seealso cref="T:Zongsoft.Plugins.IParser"/> 接口的类。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.FixedElementType.Module">
+            <summary>模块，指实现了 <seealso cref="!:Zongsoft.ComponentModel.IModule, Zongsoft.CoreLibrary"/> 接口的类。</summary>
+        </member>
+        <member name="T:Zongsoft.Plugins.WorkbenchBase">
+            <summary>
+            提供工作台的基本封装，建议自定义工作台从此类继承。
+            </summary>
+        </member>
+        <member name="M:Zongsoft.Plugins.WorkbenchBase.Close">
+            <summary>
+            关闭工作台。
+            </summary>
+            <returns>如果关闭成功返回真(true)，否则返回假(false)。如果取消关闭操作，亦返回假(false)。</returns>
+        </member>
+        <member name="P:Zongsoft.Plugins.WorkbenchBase.ApplicationContext">
+            <summary>
+            获取工作台所属的应用程序上下文。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.WorkbenchBase.Status">
+            <summary>
+            获取工作台的运行状态。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.WorkbenchBase.Title">
+            <summary>
+            获取或设置工作台的标题。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.WorkbenchBase.PluginContext">
+            <summary>
+            获取当前插件运行时的上下文对象。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.WorkbenchBase.StartupPath">
+            <summary>
+            获取或设置启动的工作者所挂载的插件路径，默认值为当前工作台路径下名为 Startup 的子路径。
+            </summary>
+            <remarks>
+            该属性只能在工作台未启动时进行设置。
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">当工作台未处于<seealso cref="F:Zongsoft.Plugins.WorkbenchStatus.None"/>状态时设置该属性。</exception>
+        </member>
+        <member name="T:Zongsoft.Plugins.WorkbenchStatus">
+            <summary>
+            表示工作台的运行状态。
+            </summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.WorkbenchStatus.None">
+            <summary>未启动或已关闭。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.WorkbenchStatus.Opening">
+            <summary>正在打开中，表示正在启动工作台。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.WorkbenchStatus.Running">
+            <summary>正常运行。</summary>
+        </member>
+        <member name="F:Zongsoft.Plugins.WorkbenchStatus.Closing">
+            <summary>正在关闭中，表示正在执行关闭操作。</summary>
+        </member>
+    </members>
+</doc>
