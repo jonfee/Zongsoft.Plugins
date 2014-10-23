@@ -100,6 +100,9 @@
 
 	<!-- 挂载服务提供程序 -->
 	<extension path="/Workspace/Services/Providers">
+		<!-- 挂载“数据”服务提供程序 -->
+		<serviceProvider name="Data" path="/Workspace/Services/Data" />
+
 		<!-- 挂载“通讯”服务提供程序 -->
 		<serviceProvider name="Communication" path="/Workspace/Services/Communication" />
 
@@ -118,6 +121,11 @@
 
 			<queue.maximumLimit>1024</queue.maximumLimit>
 		</object>
+	</extension>
+
+	<!-- 挂载“数据”相关的各种服务 -->
+	<extension path="/Workspace/Services/Data">
+		<object name="SqlClint" value="{static:System.Data.SqlClient.SqlClientFactory.Instance, System.Data}" />
 	</extension>
 
 	<!-- 挂载全局模式根节点 -->
