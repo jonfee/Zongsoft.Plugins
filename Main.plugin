@@ -25,7 +25,6 @@
 		<builder name="option" type="Zongsoft.Options.Plugins.Builders.OptionBuilder, Zongsoft.Plugins" />
 
 		<!-- 服务管理 -->
-		<builder name="worker" type="Zongsoft.Services.Plugins.Builders.WorkerBuilder, Zongsoft.Plugins" />
 		<builder name="provider" type="Zongsoft.Services.Plugins.Builders.ServiceProviderBuilder, Zongsoft.Plugins" />
 		<builder name="serviceProvider" type="Zongsoft.Services.Plugins.Builders.ServiceProviderBuilder, Zongsoft.Plugins" />
 		<builder name="commandNode" type="Zongsoft.Services.Plugins.Builders.CommandTreeNodeBuilder, Zongsoft.Plugins" />
