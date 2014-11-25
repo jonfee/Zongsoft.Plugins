@@ -53,7 +53,7 @@
 		<!-- 设置选项扩展点 -->
 		<object name="Options" value="/Workspace/Environment/ApplicationContext.OptionManager.RootNode">
 			<option name="Environment" title="{res:Text.Environment}" />
-			
+
 			<option name="Communication" title="{res:Text.Communication}">
 				<option name="Net" title="{res:Text.Net}" />
 			</option>
@@ -124,7 +124,7 @@
 
 	<!-- 挂载“数据”相关的各种服务 -->
 	<extension path="/Workspace/Services/Data">
-		<object name="SqlClint" value="{static:System.Data.SqlClient.SqlClientFactory.Instance, System.Data}" />
+		<object name="SqlClient" value="{static:System.Data.SqlClient.SqlClientFactory.Instance, System.Data}" />
 	</extension>
 
 	<!-- 挂载全局模式根节点 -->
