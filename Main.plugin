@@ -4,7 +4,7 @@
         author="Popeye Zhong(zongsoft@gmail.com)"
         version="3.1.1310.0"
         copyright="Copyright (C) 2010-2013 Zongsoft Corporation. All rights reserved."
-        description="Created Date: 2012-6-9 by Popeye Zhong, Modified Date: 2013-10 by Popeye Zhong.">
+        description="Created Date: 2012-6-9 by Popeye Zhong, Modified Date: 2014-11 by Popeye Zhong.">
 
 	<manifest>
 		<assemblies>
