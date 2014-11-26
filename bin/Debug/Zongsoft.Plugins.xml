@@ -1154,6 +1154,11 @@
             获取当前插件运行时的唯一插件树对象。
             </summary>
         </member>
+        <member name="P:Zongsoft.Plugins.PluginContext.Plugins">
+            <summary>
+            获取加载的根插件集。
+            </summary>
+        </member>
         <member name="P:Zongsoft.Plugins.PluginContext.ApplicationContext">
             <summary>
             获取当前插件运行时所属的应用程序上下文对象。
