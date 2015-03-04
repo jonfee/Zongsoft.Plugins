@@ -47,7 +47,7 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Zongsoft.CoreLibrary">
-      <HintPath>..\Zongsoft.CoreLibrary\bin\$(Configuration)\Zongsoft.CoreLibrary.dll</HintPath>
+      <HintPath>..\..\Zongsoft.CoreLibrary\src\bin\$(Configuration)\Zongsoft.CoreLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +157,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Changes.log" />
-    <None Include="Main.plugin">
+    <None Include="..\Main.plugin">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
