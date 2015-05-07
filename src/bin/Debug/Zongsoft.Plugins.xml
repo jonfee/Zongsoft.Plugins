@@ -502,7 +502,7 @@
             退出命令。
             </summary>
         </member>
-        <member name="M:Zongsoft.Plugins.ExitCommand.Run(System.Object)">
+        <member name="M:Zongsoft.Plugins.ExitCommand.OnExecute(Zongsoft.Services.CommandContextBase)">
             <summary>
             执行退出命令。
             </summary>
