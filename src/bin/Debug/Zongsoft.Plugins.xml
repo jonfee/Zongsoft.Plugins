@@ -1374,7 +1374,7 @@
             卸载指定路径的自定义对象。
             </summary>
             <param name="path">指定要卸载的路径。</param>
-            <returns>如果成功卸载则返回真(True)，否则返回假(False)。</returns>
+            <returns>如果成功卸载则返回被卸载的对象，否则返回空(null)。</returns>
             <exception cref="T:System.ArgumentNullException">当<paramref name="path"/>参数为空或全空字符串。</exception>
             <exception cref="T:System.ArgumentException">当<paramref name="path"/>参数对应的节点对象的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Tree"/>属性与当前插件树对象不是同一个引用。</exception>
             <remarks>
@@ -1388,12 +1388,11 @@
             卸载指定插件树节点对应的自定义对象。
             </summary>
             <param name="node">指定要卸载对象的挂靠节点。</param>
-            <returns>如果成功卸载则返回真(True)，否则返回假(False)。</returns>
+            <returns>如果成功卸载则返回被卸载的对象，否则返回空(null)。</returns>
             <exception cref="T:System.ArgumentNullException">当<paramref name="node"/>参数为空(null)。</exception>
             <exception cref="T:System.ArgumentException">当<paramref name="node"/>参数的<see cref="P:Zongsoft.Plugins.PluginTreeNode.Tree"/>属性与当前插件树对象不是同一个引用。</exception>
             <remarks>
-            	<para>如果<paramref name="node"/>参数指定的节点对象的节点类型(即<seealso cref="P:Zongsoft.Plugins.PluginTreeNode.NodeType"/>属性)不是自定义对象，则返回失败。</para>
-            	<para>如果<paramref name="node"/>参数指定的节点对象的Value属性值实现了<seealso cref="T:System.IDisposable"/>接口，则调用该接口的Dispose方法。</para>
+            	<para>注意：当前该方法的实现是不完备的，请谨慎使用！</para>
             	<para>将<paramref name="node"/>参数指定的节点对象的Value属性置空，导致该节点类型成为路径节点(即空节点)。</para>
             	<para>如果<paramref name="node"/>参数指定的节点对象没有子节点了，则将该节点从插件树中删除，否则保留。</para>
             </remarks>
