@@ -39,7 +39,7 @@
 		<parser name="opt" type="Zongsoft.Options.Plugins.Parsers.OptionParser, Zongsoft.Plugins" />
 		<parser name="srv" type="Zongsoft.Services.Plugins.Parsers.ServicesParser, Zongsoft.Plugins" />
 		<parser name="cmd" type="Zongsoft.Services.Plugins.Parsers.CommandParser, Zongsoft.Plugins" />
-		<parser name="authorize" type="Zongsoft.Security.Membership.Plugins.AuthorizationParser, Zongsoft.Plugins" />
+		<parser name="predicate" type="Zongsoft.Services.Plugins.Parsers.PredicateParser, Zongsoft.Plugins" />
 	</parsers>
 
 	<!-- 挂载启动项 -->
@@ -172,6 +172,18 @@
 	</extension>
 
 	<!-- 挂载安全业务 -->
+	<extension path="/Workbench/Security/PredicationPrviders">
+		<object name="Authentication" type="Zongsoft.Services.Plugins.PredicationProvider, Zongsoft.Plugins">
+			<object name="IsAuthenticated" type="Zongsoft.Security.Plugins.IsAuthenticatedPredication, Zongsoft.Plugins" />
+			<object name="IsUnauthenticated" type="Zongsoft.Security.Plugins.IsUnauthenticatedPredication, Zongsoft.Plugins" />
+		</object>
+
+		<object name="Authorization" type="Zongsoft.Services.Plugins.PredicationProvider, Zongsoft.Plugins">
+			<object name="IsAuthorized" type="Zongsoft.Security.Plugins.IsAuthorizedPredication, Zongsoft.Plugins" />
+			<object name="IsUnauthorized" type="Zongsoft.Security.Plugins.IsUnauthorizedPredication, Zongsoft.Plugins" />
+		</object>
+	</extension>
+	
 	<extension path="/Workspace/Security">
 		<object name="CertificationProvider"
 		        cache="{object:Zongsoft.Runtime.Caching.MemoryDictionaryCacheProvider, Zongsoft.CoreLibrary}"
