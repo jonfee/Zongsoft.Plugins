@@ -97,6 +97,12 @@
             获取当前的构建上下文对象。
             </summary>
         </member>
+        <member name="P:Zongsoft.Plugins.BuiltinBehaviourAttribute.Interrupting">
+            <summary>
+            	<para>获取或设置一个值，表示是否当插件构建完当前<seealso cref="T:Zongsoft.Plugins.Builtin"/>构件时是否阻断构建器继续构建该构件的子构件。</para>
+            	<para>如果返回真(True)则表示阻断，否则不阻断。</para>
+            </summary>
+        </member>
         <member name="T:Zongsoft.Plugins.IBuilder">
             <summary>
             表示构建器的接口。
