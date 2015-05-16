@@ -186,7 +186,6 @@
 	
 	<extension path="/Workspace/Security">
 		<object name="CertificationProvider"
-		        cache="{object:Zongsoft.Runtime.Caching.MemoryDictionaryCacheProvider, Zongsoft.CoreLibrary}"
 		        type="Zongsoft.Security.Membership.CertificationProvider, Zongsoft.CoreLibrary" />
 
 		<object name="RoleProvider"
