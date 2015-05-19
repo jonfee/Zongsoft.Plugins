@@ -44,14 +44,14 @@
 
 	<!-- 挂载启动项 -->
 	<extension path="/Workbench/Startup">
-		<!--object name="TcpServer" value="/Workspace/Communication/TcpServer" /-->
-		<!--object name="FtpServer" value="/Workspace/Communication/FtpServer" /-->
+		<!--object name="TcpServer" value="{path:/Workspace/Communication/TcpServer}" /-->
+		<!--object name="FtpServer" value="{path:/Workspace/Communication/FtpServer}" /-->
 	</extension>
 
 	<!-- 声明扩展点 -->
 	<extension path="/Workbench">
 		<!-- 设置选项扩展点 -->
-		<object name="Options" value="/Workspace/Environment/ApplicationContext.OptionManager.RootNode">
+		<object name="Options" value="{path:/Workspace/Environment/ApplicationContext.OptionManager.RootNode}">
 			<option name="Environment" title="{res:Text.Environment}" />
 
 			<option name="Communication" title="{res:Text.Communication}">
@@ -61,7 +61,7 @@
 
 		<!-- 设置异常管理扩展点 -->
 		<object name="ExceptionManager" value="{static:Zongsoft.Diagnostics.ExceptionHandlerManager.Instance, Zongsoft.CoreLibrary}">
-			<object name="Handlers" value="/Workbench/ExceptionManager.Handlers" />
+			<object name="Handlers" value="{path:/Workbench/ExceptionManager.Handlers}" />
 		</object>
 	</extension>
 
@@ -74,12 +74,12 @@
 
 	<!-- 挂载服务容器工厂 -->
 	<extension path="/Workspace/Services">
-		<object name="Providers" value="/Workspace/Environment/ApplicationContext.ServiceFactory" />
+		<object name="Providers" value="{path:/Workspace/Environment/ApplicationContext.ServiceFactory}" />
 	</extension>
 
 	<!-- 将服务容器工厂路径附加到工作台路径下，以匿名节点的方式驱动服务容器工厂的自动构建动作 -->
 	<extension path="/Workbench">
-		<object value="/Workspace/Services/Providers" />
+		<object value="{path:/Workspace/Services/Providers}" />
 	</extension>
 
 	<!-- 挂载命令执行器 -->
@@ -111,7 +111,7 @@
 
 	<!-- 挂载默认服务容器下的各个服务 -->
 	<extension path="/Workspace/Services">
-		<object name="SchemaProvider" category="/Workspace/Schemas" type="Zongsoft.ComponentModel.SchemaProvider, Zongsoft.CoreLibrary" />
+		<object name="SchemaProvider" category="{path:/Workspace/Schemas}" type="Zongsoft.ComponentModel.SchemaProvider, Zongsoft.CoreLibrary" />
 
 		<object name="Queue" minimumGrow="256" type="Zongsoft.Collections.Queue, Zongsoft.CoreLibrary">
 			<object.constructor>
@@ -165,10 +165,10 @@
 
 	<!-- 挂载“通讯”相关的各种服务 -->
 	<extension path="/Workspace/Services/Communication">
-		<object name="TcpServer" value="/Workspace/Communication/TcpServer" />
-		<object name="TcpClient" value="/Workspace/Communication/TcpClient" />
-		<object name="FtpServer" value="/Workspace/Communication/FtpServer" />
-		<object name="FtpClient" value="/Workspace/Communication/FtpClient" />
+		<object name="TcpServer" value="{path:/Workspace/Communication/TcpServer}" />
+		<object name="TcpClient" value="{path:/Workspace/Communication/TcpClient}" />
+		<object name="FtpServer" value="{path:/Workspace/Communication/FtpServer}" />
+		<object name="FtpClient" value="{path:/Workspace/Communication/FtpClient}" />
 	</extension>
 
 	<!-- 挂载安全业务 -->
@@ -186,26 +186,25 @@
 	
 	<extension path="/Workspace/Security">
 		<object name="CertificationProvider"
-		        type="Zongsoft.Security.Membership.CertificationProvider, Zongsoft.CoreLibrary" />
+		        type="Zongsoft.Security.CertificationProvider, Zongsoft.CoreLibrary" />
 
 		<object name="RoleProvider"
 		        certificationProvider="{path:../CertificationProvider}"
-		        objectAccess="{srv:Data}"
+		        dataAccess="{srv:Data}"
 		        type="Zongsoft.Security.Membership.RoleProvider, Zongsoft.CoreLibrary" />
 
 		<object name="UserProvider"
 		        certificationProvider="{path:../CertificationProvider}"
-		        objectAccess="{srv:Data}"
+		        dataAccess="{srv:Data}"
 		        type="Zongsoft.Security.Membership.UserProvider, Zongsoft.CoreLibrary" />
 
 		<object name="PermissionProvider"
 		        certificationProvider="{path:../CertificationProvider}"
-		        objectAccess="{srv:Data}"
+		        dataAccess="{srv:Data}"
 		        type="Zongsoft.Security.Membership.PermissionProvider, Zongsoft.CoreLibrary" />
 
 		<object name="Authentication"
-		        certificationProvider="{path:../CertificationProvider}"
-		        objectAccess="{srv:Data}"
+		        dataAccess="{srv:Data}"
 		        type="Zongsoft.Security.Membership.Authentication, Zongsoft.CoreLibrary" />
 
 		<object name="Authorization"
@@ -217,11 +216,11 @@
 
 	<!-- 挂载“安全”相关的各种服务 -->
 	<extension path="/Workspace/Services/Security">
-		<object name="CertificationProvider" value="/Workspace/Security/CertificationProvider" />
-		<object name="RoleProvider" value="/Workspace/Security/RoleProvider" />
-		<object name="UserProvider" value="/Workspace/Security/UserProvider" />
-		<object name="PermissionProvider" value="/Workspace/Security/PermissionProvider" />
-		<object name="Authentication" value="/Workspace/Security/Authentication" />
-		<object name="Authorization" value="/Workspace/Security/Authorization" />
+		<object name="CertificationProvider" value="{path:/Workspace/Security/CertificationProvider}" />
+		<object name="RoleProvider" value="{path:/Workspace/Security/RoleProvider}" />
+		<object name="UserProvider" value="{path:/Workspace/Security/UserProvider}" />
+		<object name="PermissionProvider" value="{path:/Workspace/Security/PermissionProvider}" />
+		<object name="Authentication" value="{path:/Workspace/Security/Authentication}" />
+		<object name="Authorization" value="{path:/Workspace/Security/Authorization}" />
 	</extension>
 </plugin>
