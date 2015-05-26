@@ -1540,6 +1540,34 @@
         <member name="F:Zongsoft.Plugins.PluginTreeStatus.Loaded">
             <summary>已加载完成。</summary>
         </member>
+        <member name="P:Zongsoft.Services.Plugins.PluginPredicationContext.Parameter">
+            <summary>
+            获传入的参数文本。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.PluginPredicationContext.Builtin">
+            <summary>
+            获取待解析文本所在的构件(<see cref="P:Zongsoft.Services.Plugins.PluginPredicationContext.Builtin"/>)，注意：该属性可能返回空值(null)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.PluginPredicationContext.Node">
+            <summary>
+            获取待解析文本所在的插件树节点(<see cref="T:Zongsoft.Plugins.PluginTreeNode"/>)，注意：该属性可能返回空值(null)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.PluginPredicationContext.Plugin">
+            <summary>
+            获取待解析文本所在构件或插件树节点所隶属的插件对象，注意：该属性可能返回空值(null)。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.PluginPredicationContext.PluginContext">
+            <summary>
+            获取插件应用上下文对象，注意：该属性值可能会为空值(null)。
+            </summary>
+            <remarks>
+            	<para>如果当前解析器上下文关联到一个空节点或者自定义节点，则该属性返回空。</para>
+            </remarks>
+        </member>
         <member name="M:Zongsoft.Services.Plugins.ServiceProvider.ToString">
             <summary>
             返回服务供应程序的描述文本，该格式为：[Path]{Type.FullName}
