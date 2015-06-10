@@ -84,6 +84,9 @@
 
 	<!-- 挂载服务提供程序 -->
 	<extension path="/Workspace/Services/Providers">
+		<!-- 挂载“文件目录系统”服务提供程序 -->
+		<serviceProvider name="FileSystem" path="/Workspace/Services/FileSystem" />
+
 		<!-- 挂载“数据”服务提供程序 -->
 		<serviceProvider name="Data" path="/Workspace/Services/Data" />
 
@@ -96,6 +99,10 @@
 
 	<!-- 挂载默认服务容器下的各个服务 -->
 	<extension path="/Workspace/Services">
+		<object name="FileSystem" serviceProvider="{srv:@FileSystem}" type="Zongsoft.IO.FileSystem, Zongsoft.CoreLibrary" />
+		<object name="StorageFile" type="Zongsoft.IO.StorageFile, Zongsoft.CoreLibrary" />
+		<object name="StorageBucket" type="Zongsoft.IO.StorageBucket, Zongsoft.CoreLibrary" />
+
 		<object name="SchemaProvider" category="{path:/Workspace/Schemas}" type="Zongsoft.ComponentModel.SchemaProvider, Zongsoft.CoreLibrary" />
 
 		<object name="Queue" minimumGrow="256" type="Zongsoft.Collections.Queue, Zongsoft.CoreLibrary">
@@ -107,6 +114,11 @@
 		</object>
 
 		<object name="HasCollection" type="Zongsoft.Collections.Plugins.HasCollectionPredication, Zongsoft.Plugins" />
+	</extension>
+
+	<!-- 挂载“文件目录系统”相关的各种服务 -->
+	<extension path="/Workspace/Services/FileSystem">
+		<object name="LocalFileSystem" type="Zongsoft.IO.LocalFileSystem, Zongsoft.CoreLibrary" />
 	</extension>
 
 	<!-- 挂载“数据”相关的各种服务 -->
