@@ -118,7 +118,7 @@
 
 	<!-- 挂载“文件目录系统”相关的各种服务 -->
 	<extension path="/Workspace/Services/FileSystem">
-		<object name="LocalFileSystem" type="Zongsoft.IO.LocalFileSystem, Zongsoft.CoreLibrary" />
+		<object name="LocalFileSystem" value="{static:Zongsoft.IO.LocalFileSystem.Instance, Zongsoft.CoreLibrary}" />
 	</extension>
 
 	<!-- 挂载“数据”相关的各种服务 -->
