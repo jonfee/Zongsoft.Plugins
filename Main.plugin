@@ -50,6 +50,9 @@
 
 	<!-- 声明扩展点 -->
 	<extension path="/Workbench">
+		<!-- 挂载文件目录系统 -->
+		<object name="FileSystem" value="{static:Zongsoft.IO.FileSystem.Instance, Zongsoft.CoreLibrary}" />
+
 		<!-- 设置选项扩展点 -->
 		<object name="Options" value="{path:/Workspace/Environment/ApplicationContext.OptionManager.RootNode}">
 			<option name="Environment" title="{res:Text.Environment}" />
@@ -84,9 +87,6 @@
 
 	<!-- 挂载服务提供程序 -->
 	<extension path="/Workspace/Services/Providers">
-		<!-- 挂载“文件目录系统”服务提供程序 -->
-		<serviceProvider name="FileSystem" path="/Workspace/Services/FileSystem" />
-
 		<!-- 挂载“数据”服务提供程序 -->
 		<serviceProvider name="Data" path="/Workspace/Services/Data" />
 
@@ -99,7 +99,7 @@
 
 	<!-- 挂载默认服务容器下的各个服务 -->
 	<extension path="/Workspace/Services">
-		<object name="FileSystem" serviceProvider="{srv:@FileSystem}" type="Zongsoft.IO.FileSystem, Zongsoft.CoreLibrary" />
+		<object name="FileSystem" value="{path:/Workbench/FileSystem}" />
 		<object name="StorageFile" type="Zongsoft.IO.StorageFile, Zongsoft.CoreLibrary" />
 		<object name="StorageBucket" type="Zongsoft.IO.StorageBucket, Zongsoft.CoreLibrary" />
 
@@ -114,11 +114,6 @@
 		</object>
 
 		<object name="HasCollection" type="Zongsoft.Collections.Plugins.HasCollectionPredication, Zongsoft.Plugins" />
-	</extension>
-
-	<!-- 挂载“文件目录系统”相关的各种服务 -->
-	<extension path="/Workspace/Services/FileSystem">
-		<object name="LocalFileSystem" value="{static:Zongsoft.IO.LocalFileSystem.Instance, Zongsoft.CoreLibrary}" />
 	</extension>
 
 	<!-- 挂载“数据”相关的各种服务 -->
