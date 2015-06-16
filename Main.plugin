@@ -50,8 +50,14 @@
 
 	<!-- 声明扩展点 -->
 	<extension path="/Workbench">
-		<!-- 挂载文件目录系统 -->
-		<object name="FileSystem" value="{static:Zongsoft.IO.FileSystem.Instance, Zongsoft.CoreLibrary}" />
+		<!-- 设置文件目录系统的服务容器 -->
+		<object name="FileSystem" type="Zongsoft.Services.Plugins.ServiceProvider, Zongsoft.Plugins">
+			<!-- 设置构件行为特性：将当前服务容器赋值给文件系统的静态属性 -->
+			<object.property name="Services" type="Zongsoft.IO.FileSystem, Zongsoft.CoreLibrary" value="{path:.}" />
+
+			<!-- 挂载本地文件目录系统 -->
+			<object name="LocalFileSystem" value="{static:Zongsoft.IO.LocalFileSystem.Instance, Zongsoft.CoreLibrary}" />
+		</object>
 
 		<!-- 设置选项扩展点 -->
 		<object name="Options" value="{path:/Workspace/Environment/ApplicationContext.OptionManager.RootNode}">
@@ -99,7 +105,6 @@
 
 	<!-- 挂载默认服务容器下的各个服务 -->
 	<extension path="/Workspace/Services">
-		<object name="FileSystem" value="{path:/Workbench/FileSystem}" />
 		<object name="StorageFile" type="Zongsoft.IO.StorageFile, Zongsoft.CoreLibrary" />
 		<object name="StorageBucket" type="Zongsoft.IO.StorageBucket, Zongsoft.CoreLibrary" />
 
@@ -107,7 +112,7 @@
 
 		<object name="Queue" minimumGrow="256" type="Zongsoft.Collections.Queue, Zongsoft.CoreLibrary">
 			<object.constructor>
-				<parameter name="capacity" type="int">1024</parameter>
+				<parameter name="capacity" type="int" value="1024" />
 			</object.constructor>
 
 			<queue.maximumLimit>1024</queue.maximumLimit>
@@ -124,9 +129,9 @@
 	<!-- 挂载命令执行器 -->
 	<extension path="/Workbench">
 		<!-- 创建命令执行器并将其设置到默认属性中 -->
-		<object name="CommandExecutor"
-		        set="Zongsoft.Services.CommandExecutor.Default, Zongsoft.CoreLibrary"
-		        type="Zongsoft.Services.CommandExecutor, Zongsoft.CoreLibrary">
+		<object name="CommandExecutor" type="Zongsoft.Services.CommandExecutor, Zongsoft.CoreLibrary">
+			<!-- 设置构件行为特性：将当前命令执行器对象赋值给命令执行器类的静态属性 -->
+			<object.property name="Default" type="Zongsoft.Services.CommandExecutor, Zongsoft.CoreLibrary" value="{path:.}" />
 
 			<!-- 将默认命令执行器的根节点暴露出来 -->
 			<object name="Commands" value="{path:../@Root}" />

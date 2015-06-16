@@ -62,14 +62,6 @@
             获取当前节点的所有者节点。
             </summary>
         </member>
-        <member name="P:Zongsoft.Plugins.Builders.BuilderContext.IsPreserveValue">
-            <summary>
-            获取或设置一个值，表示是否由构建器将<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Value"/>属性值保存到当前对应<seealso cref="T:Zongsoft.Plugins.Builtin"/>构件的<seealso cref="P:Zongsoft.Plugins.Builtin.Value"/>属性中。默认值为真(true)。
-            </summary>
-            <remarks>
-            	<para>注意：如果本属性为真(true)并且<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Value"/>属性返回空值(null)，则将使用<see cref="P:Zongsoft.Plugins.Builders.BuilderContext.Result"/>属性值保存到当前对应<seealso cref="T:Zongsoft.Plugins.Builtin"/>构件的<seealso cref="P:Zongsoft.Plugins.Builtin.Value"/>属性中。</para>
-            </remarks>
-        </member>
         <member name="P:Zongsoft.Plugins.Builders.BuilderContext.Result">
             <summary>
             获取或设置由构建器创建的目标对象。
@@ -95,12 +87,6 @@
         <member name="P:Zongsoft.Plugins.Builders.BuilderEventArgs.Context">
             <summary>
             获取当前的构建上下文对象。
-            </summary>
-        </member>
-        <member name="P:Zongsoft.Plugins.BuiltinBehaviourAttribute.Interrupting">
-            <summary>
-            	<para>获取或设置一个值，表示是否当插件构建完当前<seealso cref="T:Zongsoft.Plugins.Builtin"/>构件时是否阻断构建器继续构建该构件的子构件。</para>
-            	<para>如果返回真(True)则表示阻断，否则不阻断。</para>
             </summary>
         </member>
         <member name="T:Zongsoft.Plugins.IBuilder">
@@ -493,14 +479,29 @@
             获取构件的缓存值，获取该属性值始终不会引发构建动作。
             </summary>
         </member>
-        <member name="P:Zongsoft.Plugins.Builtin.Properties">
-            <summary>
-            获取构件的扩展属性集。
-            </summary>
-        </member>
         <member name="P:Zongsoft.Plugins.Builtin.BuiltinType">
             <summary>
             获取构件的类型定义。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.HasBehaviors">
+            <summary>
+            获取当前构件是否具有特性，即 <see cref="P:Zongsoft.Plugins.Builtin.Behaviors"/> 属性不为空并且集合元素数量大于零。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Behaviors">
+            <summary>
+            获取构件的行为特性集。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.HasProperties">
+            <summary>
+            获取当前构件是否具有扩展属性。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Plugins.Builtin.Properties">
+            <summary>
+            获取构件的扩展属性集。
             </summary>
         </member>
         <member name="T:Zongsoft.Plugins.ExitCommand">
@@ -1507,6 +1508,11 @@
             获取插件树节点的完整路径，该路径包含当前节点的名称。
             </summary>
         </member>
+        <member name="P:Zongsoft.Plugins.PluginTreeNode.HasProperties">
+            <summary>
+            获取当前插件节点是否具有扩展属性。
+            </summary>
+        </member>
         <member name="P:Zongsoft.Plugins.PluginTreeNode.Properties">
             <summary>
             获取插件节点的扩展属性集。
@@ -1573,9 +1579,14 @@
             返回服务供应程序的描述文本，该格式为：[Path]{Type.FullName}
             </summary>
         </member>
-        <member name="P:Zongsoft.Services.Plugins.ServiceProvider.Path">
+        <member name="P:Zongsoft.Services.Plugins.ServiceProvider.ProviderPath">
             <summary>
-            获取或设置当前服务供应程序注册在其下各服务对象在插件树中的路径。
+            获取或设置当前服务供应程序的插件路径，即注册在其下各服务对象所在的插件路径。
+            </summary>
+        </member>
+        <member name="P:Zongsoft.Services.Plugins.ServiceProvider.ProviderNode">
+            <summary>
+            获取当前服务提供程序注册的插件节点。
             </summary>
         </member>
         <member name="P:Zongsoft.Services.Plugins.ServiceProvider.Context">
