@@ -123,7 +123,8 @@
 
 	<!-- 挂载“数据”相关的各种服务 -->
 	<extension path="/Workspace/Services/Data">
-		<object name="SqlClient" value="{static:System.Data.SqlClient.SqlClientFactory.Instance, System.Data}" />
+		<!-- object name="SqlClient" value="{static:System.Data.SqlClient.SqlClientFactory.Instance, System.Data}" /-->
+		<!-- object name="Security" type="Zongsoft.Data.MySqlDataAccess, Zongsoft.Data" option="{opt:/Data/Security}" /-->
 	</extension>
 
 	<!-- 挂载命令执行器 -->
@@ -197,21 +198,21 @@
 
 		<object name="RoleProvider"
 		        certificationProvider="{path:../CertificationProvider}"
-		        dataAccess="{srv:Data}"
+		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.RoleProvider, Zongsoft.CoreLibrary" />
 
 		<object name="UserProvider"
 		        certificationProvider="{path:../CertificationProvider}"
-		        dataAccess="{srv:Data}"
+		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.UserProvider, Zongsoft.CoreLibrary" />
 
 		<object name="PermissionProvider"
 		        certificationProvider="{path:../CertificationProvider}"
-		        dataAccess="{srv:Data}"
+		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.PermissionProvider, Zongsoft.CoreLibrary" />
 
 		<object name="Authentication"
-		        dataAccess="{srv:Data}"
+		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.Authentication, Zongsoft.CoreLibrary" />
 
 		<object name="Authorization"
