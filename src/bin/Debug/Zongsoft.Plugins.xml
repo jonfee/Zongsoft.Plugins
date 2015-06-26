@@ -94,6 +94,11 @@
             表示构建器的接口。
             </summary>
         </member>
+        <member name="M:Zongsoft.Plugins.IBuilder.GetType(Zongsoft.Plugins.Builtin)">
+            <summary>
+            获取构建器对应指定构件的构建结果的类型。
+            </summary>
+        </member>
         <member name="M:Zongsoft.Plugins.IBuilder.Build(Zongsoft.Plugins.Builders.BuilderContext)">
             <summary>
             创建指定构件对应的目标对象。
