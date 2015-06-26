@@ -56,6 +56,9 @@
     <Compile Include="Builders\BuilderContext.cs" />
     <Compile Include="Builders\BuilderEventArgs.cs" />
     <Compile Include="Builders\BuilderManager.cs" />
+    <Compile Include="BuiltinBehavior.cs" />
+    <Compile Include="BuiltinBehaviorCollection.cs" />
+    <Compile Include="Collections\HasCollectionPredication.cs" />
     <Compile Include="Diagnostics\TracerModule.cs" />
     <Compile Include="Options\Builders\OptionBuilder.cs" />
     <Compile Include="Options\OptionModule.cs" />
@@ -64,17 +67,14 @@
     <Compile Include="Options\SettingProviderFactory.cs" />
     <Compile Include="Parsers\ObjectParser.cs" />
     <Compile Include="Parsers\StaticParser.cs" />
-    <Compile Include="Security\Membership\AuthorizationParser.cs" />
+    <Compile Include="Security\AuthenticationPredications.cs" />
+    <Compile Include="Security\AuthorizationPredications.cs" />
     <Compile Include="Services\Builders\CommandTreeNodeBuilder.cs" />
-    <Compile Include="Services\Composition\Builders\PredicationBuilder.cs" />
     <Compile Include="Services\Composition\Parsers\PredicationParser.cs" />
     <Compile Include="IAppender.cs" />
     <Compile Include="BuiltinTypeConstructor.cs" />
     <Compile Include="Collections\CategoryBuilder.cs" />
     <Compile Include="ComponentModel\Builders\ComponentBuilder.cs" />
-    <Compile Include="Services\Composition\Builders\ExecutionFilterBuilder.cs" />
-    <Compile Include="Services\Composition\Builders\ExecutionHandlerBuilder.cs" />
-    <Compile Include="Services\Composition\Builders\ExecutionPipelineBuilder.cs" />
     <Compile Include="AppenderBehaviour.cs" />
     <Compile Include="AppenderContext.cs" />
     <Compile Include="ObtainMode.cs" />
@@ -93,10 +93,8 @@
     <Compile Include="Services\Builders\ServiceProviderBuilder.cs" />
     <Compile Include="Builtin.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
-    <Compile Include="ExceptionUtility.cs" />
     <Compile Include="FailureCodes.cs" />
     <Compile Include="IBuilder.cs" />
-    <Compile Include="IHandler.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="IsolationLevel.cs" />
     <Compile Include="IWorkbench.cs" />
@@ -105,6 +103,7 @@
     <Compile Include="Services\Parsers\CommandParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Parsers\PredicateParser.cs" />
     <Compile Include="Services\Parsers\ServicesParser.cs" />
     <Compile Include="PluginContainer.cs" />
     <Compile Include="PluginDependency.cs" />
@@ -138,9 +137,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BuiltinType.cs" />
     <Compile Include="Resources\ResourceParser.cs" />
-    <Compile Include="PluginPathResolveReason.cs" />
     <Compile Include="ComponentModel\Builders\ActionBuilder.cs" />
     <Compile Include="ComponentModel\Builders\SchemaBuilder.cs" />
+    <Compile Include="Services\PluginPredicationContext.cs" />
     <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Diagnostics\TracerHelper.cs" />
     <Compile Include="ValueChangedEventArgs.cs" />
@@ -158,10 +157,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Changes.log" />
     <None Include="..\Main.plugin">
+      <Link>Main.plugin</Link>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Changes.log" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
