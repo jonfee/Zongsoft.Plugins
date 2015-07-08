@@ -53,7 +53,7 @@
 		<!-- 设置文件目录系统的服务容器 -->
 		<object name="FileSystem" type="Zongsoft.Services.Plugins.ServiceProvider, Zongsoft.Plugins">
 			<!-- 设置构件行为特性：将当前服务容器赋值给文件系统的静态属性 -->
-			<object.property name="Services" type="Zongsoft.IO.FileSystem, Zongsoft.CoreLibrary" value="{path:.}" />
+			<object.property name="Providers" type="Zongsoft.IO.FileSystem, Zongsoft.CoreLibrary" value="{path:.}" />
 
 			<!-- 挂载本地文件目录系统 -->
 			<object name="LocalFileSystem" value="{static:Zongsoft.IO.LocalFileSystem.Instance, Zongsoft.CoreLibrary}" />
