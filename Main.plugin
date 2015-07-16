@@ -197,17 +197,14 @@
 		        type="Zongsoft.Security.CertificationProvider, Zongsoft.CoreLibrary" />
 
 		<object name="RoleProvider"
-		        certificationProvider="{path:../CertificationProvider}"
 		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.RoleProvider, Zongsoft.CoreLibrary" />
 
 		<object name="UserProvider"
-		        certificationProvider="{path:../CertificationProvider}"
 		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.UserProvider, Zongsoft.CoreLibrary" />
 
 		<object name="PermissionProvider"
-		        certificationProvider="{path:../CertificationProvider}"
 		        dataAccess="{srv:Security@Data}"
 		        type="Zongsoft.Security.Membership.PermissionProvider, Zongsoft.CoreLibrary" />
 
@@ -216,7 +213,6 @@
 		        type="Zongsoft.Security.Membership.Authentication, Zongsoft.CoreLibrary" />
 
 		<object name="Authorization"
-		        certificationProvider="{path:../CertificationProvider}"
 		        permissionProvider="{path:../PermissionProvider}"
 		        roleProvider="{path:../RoleProvider}"
 		        type="Zongsoft.Security.Membership.Authorization, Zongsoft.CoreLibrary" />
