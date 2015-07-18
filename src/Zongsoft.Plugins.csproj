@@ -67,8 +67,6 @@
     <Compile Include="Options\SettingProviderFactory.cs" />
     <Compile Include="Parsers\ObjectParser.cs" />
     <Compile Include="Parsers\StaticParser.cs" />
-    <Compile Include="Security\AuthenticationPredications.cs" />
-    <Compile Include="Security\AuthorizationPredications.cs" />
     <Compile Include="Services\Builders\CommandTreeNodeBuilder.cs" />
     <Compile Include="Services\Composition\Parsers\PredicationParser.cs" />
     <Compile Include="IAppender.cs" />
