@@ -102,8 +102,10 @@
 
 	<!-- 挂载默认服务容器下的各个服务 -->
 	<extension path="/Workspace/Services">
-		<object name="StorageFile" type="Zongsoft.IO.StorageFile, Zongsoft.CoreLibrary" />
-		<object name="StorageBucket" type="Zongsoft.IO.StorageBucket, Zongsoft.CoreLibrary" />
+		<!--
+		<object name="StorageFile" storage="{srv:Storage}" type="Zongsoft.IO.StorageFile, Zongsoft.CoreLibrary" />
+		<object name="StorageBucket" storage="{srv:Storage}" type="Zongsoft.IO.StorageBucket, Zongsoft.CoreLibrary" />
+		-->
 
 		<object name="SchemaProvider" category="{path:/Workspace/Schemas}" type="Zongsoft.ComponentModel.SchemaProvider, Zongsoft.CoreLibrary" />
 
