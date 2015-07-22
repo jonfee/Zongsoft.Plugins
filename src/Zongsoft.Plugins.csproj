@@ -112,7 +112,6 @@
     <Compile Include="PluginLoader.cs" />
     <Compile Include="PluginLoaderSetup.cs" />
     <Compile Include="PluginMountEventArgs.cs" />
-    <Compile Include="Parsers\ParserHelper.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginCollection.cs" />
     <Compile Include="PluginContext.cs" />
