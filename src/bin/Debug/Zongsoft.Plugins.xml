@@ -106,7 +106,7 @@
             <returns>创建成功后的目标对象，有关该返回值的详细定义请参考说明部分。</returns>
             <remarks>
             	<para>该方法返回值会被作为对应<see cref="T:Zongsoft.Plugins.Builtin"/>的子构件对应目标对象的所有者(即上级对象)。</para>
-            	<para>如果该方法内部设置了<param name="context"/>参数对象中的<seealso cref="!:BuilderContext.Result"/>属性不为空(null)。</para>
+            	<para>如果该方法内部设置了<param name="context"/>参数对象中的<seealso cref="P:Zongsoft.Plugins.Builders.BuilderContext.Result"/>属性不为空(null)。</para>
             </remarks>
         </member>
         <member name="M:Zongsoft.Plugins.IBuilder.OnBuilt(Zongsoft.Plugins.Builders.BuilderContext)">
@@ -130,26 +130,6 @@
             <param name="context">调用本方法进行构建的上下文对象，可通过该参数获取构建过程的相关设置或状态。</param>
             <returns>创建成功后的目标对象。</returns>
         </member>
-        <member name="M:Zongsoft.Plugins.Builders.BuilderBase.Destroy(Zongsoft.Plugins.Builders.BuilderContext)">
-            <summary>
-            卸载指定构件对应的目标对象。
-            </summary>
-            <param name="context">调用本方法进行构建的上下文对象，可通过该参数获取构建过程的相关设置或状态。</param>
-            <remarks>
-            	<para>该方法的默认实现步骤如下：</para>
-            	<list type="number">
-            		<item>
-            			<description>如果<paramref name="builtin"/>参数指定的构件有值，则判断其值是否实现了<seealso cref="T:System.IDisposable"/>接口，如果是则调用该接口的Dispose方法。</description>
-            		</item>
-            		<item>
-            			<description>如果<paramref name="builtin"/>参数指定的构件有值，则判断其值是否实现了<seealso cref="T:System.Collections.IEnumerable"/>接口，如果是则遍历重复上面的步骤一过程。</description>
-            		</item>
-            		<item>
-            			<description>将<paramref name="builtin"/>参数指定的构件的Value属性置空。</description>
-            		</item>
-            	</list>
-            </remarks>
-        </member>
         <member name="M:Zongsoft.Plugins.Builders.BuilderBase.Dispose">
             <summary>
             当构建器所属的插件被卸载，该方法被调用。
@@ -160,7 +140,7 @@
             获取在创建目标对象时要忽略设置的扩展属性名。
             </summary>
             <remarks>
-            	<para>对重写<see cref="!:BuildItem"/>方法的实现者的说明：在构建目标对象后应排除本属性所指定的在Builtin.Properties中的属性项。</para>
+            	<para>对重写<see cref="M:Zongsoft.Plugins.Builders.BuilderBase.Build(Zongsoft.Plugins.Builders.BuilderContext)"/>方法的实现者的说明：在构建目标对象后应排除本属性所指定的在Builtin.Properties中的属性项。</para>
             </remarks>
         </member>
         <member name="M:Zongsoft.Plugins.Parsers.Parser.Parse(Zongsoft.Plugins.Parsers.ParserContext)">
@@ -336,12 +316,6 @@
             本属性在首次创建<seealso cref="T:Zongsoft.Plugins.PluginContext"/>时，会调用<see cref="M:Zongsoft.Plugins.PluginApplicationContext.CreatePluginSetup"/>方法以获得插件启动配置参数，如果要提供不同的启动信息，必须重写该虚拟方法。
             </remarks>
         </member>
-        <member name="P:Zongsoft.Plugins.PluginApplicationContext.ServiceFactory">
-            <summary>
-            获取当前应用程序的服务管理对象。
-            </summary>
-            <remarks>该属性与<seealso cref="P:Zongsoft.Plugins.PluginApplicationContext.PluginContext"/>类中的同名属性完全一样。</remarks>
-        </member>
         <member name="P:Zongsoft.Plugins.PluginExtendedProperty.Name">
             <summary>
             获取当前扩展属性的名称。
@@ -389,7 +363,7 @@
             </summary>
             <remarks>
             	<para>构件是组成插件的基本组成单位。</para>
-            	<para>构件一旦被创建就属于某个插件，其位于所属插件的<seealso cref="P:Zongsoft.Plugins.Plugin.Builtins"/>集合内，但该构件是否处于插件树中，则取决于其所属的插件是否已经被成功加载，即插件的<seealso cref="!:Zongsoft.Plugins.Plugin.State"/>属性应为<seealso cref="F:Zongsoft.Plugins.PluginStatus.Loaded"/>。</para>
+            	<para>构件一旦被创建就属于某个插件，其位于所属插件的<seealso cref="P:Zongsoft.Plugins.Plugin.Builtins"/>集合内，但该构件是否处于插件树中，则取决于其所属的插件是否已经被成功加载，即插件的<seealso cref="P:Zongsoft.Plugins.Plugin.Status"/>属性应为<seealso cref="F:Zongsoft.Plugins.PluginStatus.Loaded"/>。</para>
             </remarks>
         </member>
         <member name="M:Zongsoft.Plugins.Builtin.GetValueType">
@@ -717,7 +691,7 @@
             </summary>
             <remarks>
             	<para>在调用该方法前，必须确保当前<seealso cref="P:Zongsoft.Plugins.PluginLoader.Settings"/>属性已被初始化，否则请使用带<seealso cref="T:Zongsoft.Plugins.PluginLoaderSetup"/>类型参数的Load方法重载版本。</para>
-            	<para>通过<seealso cref="P:Zongsoft.Plugins.PluginTree.Loader"/>属性获取的加载器对象默认已经通过<seealso cref="T:Zongsoft.Plugins.PluginContext"/>上下文对象的Settings属性初始化过加载器的<see cref="!:Zongsoft.Plugins.LoaderSettings"/>配置对象。</para>
+            	<para>通过<seealso cref="P:Zongsoft.Plugins.PluginTree.Loader"/>属性获取的加载器对象默认已经通过<seealso cref="T:Zongsoft.Plugins.PluginContext"/>上下文对象的Settings属性初始化过加载器的<see cref="T:Zongsoft.Plugins.PluginLoaderSetup"/>配置对象。</para>
             </remarks>
             <exception cref="T:System.InvalidOperationException">当前Settings属性没有设置，即其值为空(null)。</exception>
         </member>
@@ -779,7 +753,7 @@
         </member>
         <member name="P:Zongsoft.Plugins.PluginLoader.Settings">
             <summary>
-            获取加载器的当前加载配置对象。该属性值可通过带参的<seealso cref="M:Zongsoft.Plugins.PluginLoader.Load"/>方法注入。
+            获取加载器的当前加载配置对象。该属性值可通过带参的<seealso cref="M:Zongsoft.Plugins.PluginLoader.Load(Zongsoft.Plugins.PluginLoaderSetup)"/>方法注入。
             </summary>
         </member>
         <member name="M:Zongsoft.Plugins.PluginSetupBase.#ctor">
@@ -834,9 +808,6 @@
             <summary>
             关于插件的描述信息。
             </summary>
-            <remarks>
-            	<para>该类重写了<seealso cref="T:System.Object"/>的<seealso cref="M:System.Object.ToString"/>和<seealso cref="M:System.Object.Equals(System.Object)"/>方法。</para>
-            </remarks>
         </member>
         <member name="M:Zongsoft.Plugins.Plugin.#ctor(Zongsoft.Plugins.PluginTree,System.String,System.String,Zongsoft.Plugins.Plugin)">
             <summary>
@@ -871,7 +842,7 @@
             <summary>
             获取指定构件的解析器。
             </summary>
-            <param name="builderName">指定的解析器名称。</param>
+            <param name="parserName">指定的解析器名称。</param>
             <returns>如果找到对应的解析器则返回解析器对象，否则返回空(null)。</returns>
             <exception cref="T:System.ArgumentNullException">当<paramref name="parserName"/>参数为空(null)或空白字符。</exception>
             <remarks>
@@ -1177,7 +1148,7 @@
         </member>
         <member name="P:Zongsoft.Plugins.PluginSetup.ApplicationContextPath">
             <summary>
-            获取或设置<seealso cref="!:Zongsoft.ComponentModels.ApplicationContextBase"/>工作台位于插件树的路径。默认值为：/Workspace/Environment/ApplicationContext
+            获取或设置应用程序上下文位于插件树的路径。默认值为：/Workspace/Environment/ApplicationContext
             </summary>
         </member>
         <member name="P:Zongsoft.Plugins.PluginSetup.WorkbenchPath">
@@ -1297,7 +1268,7 @@
             <param name="value">要挂载的对象。</param>
             <returns>挂载成功则返回真(True)否则返回假(False)。</returns>
             <remarks>
-            	<para>注意：如果<paramref name="path"/>参数指定的路径对应的插件树节点已经存在，并且节点类型为<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>或者<seealso cref="!:Zongsoft.Plugins.PluginTreeNodeType.FixedElement"/>则返回假(False)。</para>
+            	<para>注意：如果<paramref name="path"/>参数指定的路径对应的插件树节点已经存在，并且节点类型为<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>并且已经构建完成则返回假(False)。</para>
             	<para>如果符合上面的条件，则激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounting"/>事件，挂入成功后激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounted"/>事件。</para>
             	<para>如果<paramref name="path"/>参数指定的路径不存在，则创建它并挂载由<paramref name="value"/>参数指定的对象。</para>
             </remarks>
@@ -1311,7 +1282,7 @@
             <param name="position">当挂载路径对应的叶子节点不存在时，由该参数确认其插入的位置，如果该参数为空(null)或空字符串则默认追加到同级节点的最后。</param>
             <returns>挂载成功则返回真(True)否则返回假(False)。</returns>
             <remarks>
-            	<para>注意：如果<paramref name="path"/>参数指定的路径对应的插件树节点已经存在，并且节点类型为<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>或者<seealso cref="!:Zongsoft.Plugins.PluginTreeNodeType.FixedElement"/>则返回假(False)。</para>
+            	<para>注意：如果<paramref name="path"/>参数指定的路径对应的插件树节点已经存在，并且节点类型为<seealso cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>并且已经构建完成则返回假(False)。</para>
             	<para>如果符合上面的条件，则激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounting"/>事件，挂入成功后激发<seealso cref="E:Zongsoft.Plugins.PluginTree.Mounted"/>事件。</para>
             	<para>如果<paramref name="path"/>参数指定的路径不存在，则创建它并挂载由<paramref name="value"/>参数指定的对象。</para>
             </remarks>
@@ -1351,7 +1322,7 @@
             <param name="node">要获取的所有者对象的节点。</param>
             <returns>返回指定节点的所有者对象，如果没有则返回空(null)。</returns>
             <remarks>
-            	<para>注意：该方法不会引起上级节点的创建动作，可确保在<see cref="!:Zongsoft.Plugins.Builder"/>构建器中使用而不会导致循环创建的问题。</para>
+            	<para>注意：该方法不会引起上级节点的创建动作，可确保在<see cref="T:Zongsoft.Plugins.IBuilder"/>构建器中使用而不会导致循环创建的问题。</para>
             </remarks>
         </member>
         <member name="P:Zongsoft.Plugins.PluginTree.Loader">
@@ -1420,7 +1391,7 @@
             </summary>
             <remarks>
             	<para>注意：该方法不会激发节点类型为<see cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>的创建动作，因此适合在不需要获取目标值的场景中使用该方法来获取其类型。</para>
-            	<para>当节点类型为<see cref="!:PluginTreeNode.Builtin"/>时的更详细行为请参考<seealso cref="M:Zongsoft.Plugins.Builtin.GetValueType"/>方法的描述信息。</para>
+            	<para>当节点类型为<see cref="F:Zongsoft.Plugins.PluginTreeNodeType.Builtin"/>时的更详细行为请参考<seealso cref="M:Zongsoft.Plugins.Builtin.GetValueType"/>方法的描述信息。</para>
             </remarks>
         </member>
         <member name="P:Zongsoft.Plugins.PluginTreeNode.Tree">
@@ -1553,7 +1524,7 @@
             <summary>解析器，指实现了 <seealso cref="T:Zongsoft.Plugins.IParser"/> 接口的类。</summary>
         </member>
         <member name="F:Zongsoft.Plugins.FixedElementType.Module">
-            <summary>模块，指实现了 <seealso cref="!:Zongsoft.ComponentModel.IModule, Zongsoft.CoreLibrary"/> 接口的类。</summary>
+            <summary>模块，指实现了 <seealso cref="T:Zongsoft.ComponentModel.IModule"/> 接口的类。</summary>
         </member>
         <member name="T:Zongsoft.Plugins.WorkbenchBase">
             <summary>
