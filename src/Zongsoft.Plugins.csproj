@@ -61,7 +61,6 @@
     <Compile Include="BuiltinBehavior.cs" />
     <Compile Include="BuiltinBehaviorCollection.cs" />
     <Compile Include="Collections\HasCollectionPredication.cs" />
-    <Compile Include="Diagnostics\TracerModule.cs" />
     <Compile Include="Options\Builders\OptionBuilder.cs" />
     <Compile Include="Options\OptionModule.cs" />
     <Compile Include="Options\OptionUtility.cs" />
@@ -124,7 +123,6 @@
     <Compile Include="PluginSetup.cs" />
     <Compile Include="PluginSetupBase.cs" />
     <Compile Include="PluginStatus.cs" />
-    <Compile Include="Diagnostics\PluginTraceEntry.cs" />
     <Compile Include="PluginTree.cs" />
     <Compile Include="PluginLoadEventArgs.cs" />
     <Compile Include="PluginTreeNode.cs" />
@@ -140,7 +138,6 @@
     <Compile Include="ComponentModel\Builders\SchemaBuilder.cs" />
     <Compile Include="Services\PluginPredicationContext.cs" />
     <Compile Include="Services\ServiceProvider.cs" />
-    <Compile Include="Diagnostics\TracerHelper.cs" />
     <Compile Include="ValueChangedEventArgs.cs" />
     <Compile Include="ValueChangingEventArgs.cs" />
     <Compile Include="ViewEventArgs.cs" />
