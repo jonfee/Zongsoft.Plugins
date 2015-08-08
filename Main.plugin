@@ -67,11 +67,6 @@
 				<option name="Net" title="{res:Text.Net}" />
 			</option>
 		</object>
-
-		<!-- 设置异常管理扩展点 -->
-		<object name="ExceptionManager" value="{static:Zongsoft.Diagnostics.ExceptionHandlerManager.Instance, Zongsoft.CoreLibrary}">
-			<object name="Handlers" value="{path:/Workbench/ExceptionManager.Handlers}" />
-		</object>
 	</extension>
 
 	<!-- 挂载默认服务容器 -->
